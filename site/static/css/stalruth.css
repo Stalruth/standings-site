@@ -1,0 +1,92 @@
+:root {
+  --color-link: #2222ff;
+  --color-accent: #9211ee4f;
+  --color-bg-secondary: #555;
+  --color-shadow: #666;
+  --color-table: #cd86ff;
+  --color-text-secondary: #fff;
+  --color-table-row: #7772;
+  font-size: 1.125rem;
+}
+
+@media(prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #9300fc4f;
+    --color-bg: #222;
+    --color-bg-secondary: #555;
+    --color-link: #aaaaff;
+    --color-secondary: #e20de9;
+    --color-secondary-accent: #e20de94f;
+    --color-shadow: #222;
+    --color-table: #6400ac;
+    --color-text: #f7f7f7;
+    --color-text-secondary: #333;
+    --color-bg-secondary: #ccc;
+    --color-table-row: #7772;
+  }
+}
+
+body {
+  overflow-x: unset;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  border-bottom: 2px solid var(--color-accent);
+}
+
+footer {
+  padding-top: 0;
+  border-top: 2px solid var(--color-accent);
+}
+
+dialog {
+    /*mvp.css is dogshit here*/
+    position: revert;
+    top: revert;
+    left: revert;
+    transform: revert;
+    width: revert;
+    z-index: revert;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 1rem;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+table {
+  display: inline-table;
+  width: 100%;
+  font-size: 0.85em;
+  margin-bottom: 1rem;
+}
+
+table thead {
+  background-color: unset;
+  color: var(--color-text);
+  position: sticky;
+  top: -5px;
+}
+
+table tr:nth-child(2n) {
+  background-color: var(--color-table-row);
+}
+
+th {
+  border-bottom: 1px solid var(--color-bg-secondary);
+  background-color: var(--color-table);
+}
+
+table thead th:first-child, table tr td:first-child {
+  text-align: var(--justify-important);
+}
+
+table td {
+  padding: 0.3em 0.2em;
+}
+
+s a {
+  text-decoration: line-through underline;
+}

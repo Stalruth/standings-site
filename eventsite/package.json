@@ -1,0 +1,19 @@
+{
+  "name": "eventsite",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0-beta.1"
+  },
+  "dependencies": {
+    "@pkmn/img": "^0.2.31"
+  }
+}

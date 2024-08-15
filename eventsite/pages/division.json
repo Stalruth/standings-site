@@ -1,0 +1,13 @@
+{
+  "pagination": {
+    "data": "divisions",
+    "size": 1,
+    "alias": "division"
+  },
+  "permalink": "{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/",
+  "eleventyComputed": {
+    "title": "{{ division.name }}: {{ tournament.name }} - VGC Homemade Standings",
+    "description": "Homemade Standings for the {{ tournament.name }}: {{ division.name }} Division."
+  }
+}
+

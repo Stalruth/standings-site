@@ -1,0 +1,177 @@
+<header>
+  <nav>
+    <p>
+      <a href="/">Index</a>
+      &nbsp;/&nbsp;
+      <a href="/{{ tournament.season }}/">{{ tournament.season }}</a>
+      &nbsp;/&nbsp;
+      <a href="/{{ tournament.season }}/{{ tournament.id }}">{{ tournament.name }}</a>
+      &nbsp;/&nbsp;
+      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}">{{ player.division | capitalize }}</a>
+      &nbsp;/&nbsp;
+      {{ player.name }}
+    </p>
+  </nav>
+</header>
+<main>
+  <h1>{{ tournament.name }}</h1>
+
+  <h2><button class="fave" data-id="{{ player.id }}">☆</button> {{ player.name }}</h2>
+
+  <h3>Record</h3>
+
+  {% if player.top %}
+    <p>
+      Final placing: 
+      {% if player.top == 1 %}
+        1st
+      {% elsif player.top == 2 %}
+        2nd
+      {% else %}
+        Top {{ player.top }}
+      {% endif %}
+    </p>
+  {% endif %}
+  <p>
+    Record:
+    {% if player.record.ties == 0 %}
+      {{ player.record.wins }}-{{ player.record.losses }}
+    {% else %}
+      {{ player.record.wins }}-{{ player.record.losses }}-{{ player.record.ties }}
+    {% endif %}
+  </p>
+  <p>
+    Resistance: {{ player.resistances.opp | percent }}
+    <span class="oppopp">
+      ({{ player.resistances.oppopp | percent }})
+    </span>
+  </p>
+
+  {% if player.team %}
+    <h3>Team</h3>
+
+    <p>
+      <a href="{{ player.paste }}">
+        {{ player.team | summariseTeam }}
+      </a>
+    </p>
+  {% endif %}
+
+  <h3>Schedule</h3>
+
+  {% assign round_counter = player.rounds | roundsPlayed %}
+  {% for roundset in player.rounds reversed %}
+    <table>
+      <caption>
+        {{ roundset.name }}
+      </caption>
+      <thead>
+        <th class="round">Round</th>
+        <th>Result</th>
+        <th class="fave">Favourite</th>
+        <th class="name-team">
+          {% if player.team %}
+            Name / Team
+          {% else %}
+            Name
+          {% endif %}
+        </th>
+        <th class="name">Name</th>
+        {% if player.team %}
+          <th class="team-link">Team Link</th>
+        {% endif %}
+        <th class="record">Record</th>
+      </thead>
+      <tbody>
+        {% if forloop.first and player.drop != -1 %}
+          <td colspan="6">Dropped at Round {{ player.drop }}</td>
+        {% endif %}
+        {% for round in roundset.rounds reversed %}
+          <tr>
+            <td class="round">
+              {% if roundset.name == 'Top Cut' %}
+                {{ forloop.rindex | cutRound: tournament.tournamentStructure[player.division].topCut }}
+              {% else %}
+                {{ round_counter }}
+              {% endif %}
+              {% assign round_counter = round_counter | minus: 1 %}
+            </td>
+            <td>
+              {% if round.result == 'L' %}
+                Loss
+              {% elsif round.result == 'W' %}
+                Win
+              {% else %}
+                Tie
+              {% endif %}
+            </td>
+            <td class="fave"><button data-id="{{ round.id }}">☆</button></td>
+            <td class="name-team">
+              <div>
+                {% if round.id != 0 %}
+                  <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.divId }}/{{ round.id }}">
+                    {{ divisions[player.divId].players[round.id].name }}
+                  </a>
+                {% else %}
+                  {% if round.result == 'L' %}
+                    <b>LATE</b>
+                  {% elsif round.result == 'W' %}
+                    <b>BYE</b>
+                  {% endif %}
+                {% endif %}
+              </div>
+              {% if player.team and divisions[player.divId].players[round.id].team %}
+                <div class="team">
+                  <a href="{{ divisions[player.divId].players[round.id].paste }}">
+                    {{ divisions[player.divId].players[round.id].team | summariseTeam: true }}
+                  </a>
+                </div>
+              {% endif %}
+            </td>
+            <td class="name">
+              {% if round.id != 0 %}
+                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
+                  {{ divisions[player.divId].players[round.id].name }}
+                </a>
+              {% else %}
+                {% if round.result == 'L' %}
+                  <b>LATE</b>
+                {% elsif round.result == 'W' %}
+                  <b>BYE</b>
+                {% endif %}
+              {% endif %}
+            </td>
+            {% if player.team %}
+              <td class="team-link">
+                {% if round.id != 0 %}
+                  <a href="{{ divisions[player.divId].players[round.id].paste }}">
+                    {{ divisions[player.divId].players[round.id].team | summariseTeam }}
+                  </a>
+              {% endif %}
+              </td>
+            {% endif %}
+            <td class="record">
+              {% if player.record.ties == 0 %}
+                {{ divisions[player.divId].players[round.id].record.wins }}-{{ divisions[player.divId].players[round.id].record.losses }}
+              {% else %}
+                {{ divisions[player.divId].players[round.id].record.wins }}-{{ divisions[player.divId].players[round.id].record.losses }}-{{ divisions[player.divId].players[round.id].record.ties }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+</main>
+
+<script type="module" src="/js/favourites.js"></script>
+<script type="module">
+  import { createFavsTable, getFavouriteHandler, updateFavouriteButtons } from '/js/favourites.js';
+
+  const storeName = 'favourites-{{ tournament.season }}-{{ tournament.id }}-{{ player.division }}';
+  updateFavouriteButtons(storeName);
+  document.querySelectorAll('button[data-id]').forEach((button) => {
+    button.addEventListener('click', getFavouriteHandler(storeName));
+  });
+</script>
+

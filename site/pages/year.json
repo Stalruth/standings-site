@@ -1,0 +1,13 @@
+{
+  "pagination": {
+    "data": "years",
+    "size": 1,
+    "alias": "year"
+  },
+  "permalink": "{{ year }}/",
+  "eleventyComputed": {
+    "title": "VGC {{ year }} Homemade Standings",
+    "description": "VGC {{ year }} Homemade Standings"
+  }
+}
+

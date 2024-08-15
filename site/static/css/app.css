@@ -1,0 +1,144 @@
+.fave {
+  padding: 0;
+}
+
+.fave button, button.fave {
+  padding: 0 1rem;
+  background: none;
+  color: inherit;
+  border: 0;
+  margin: 0;
+  font-size: 1.375rem;
+}
+
+button.fave {
+  padding: 0 0.5rem 0 0;
+}
+
+button.faved {
+  color: #d06f00;
+}
+
+.label-mobile {
+  display: none;
+}
+
+.label-desktop {
+  display: inline;
+}
+
+.team-cell a, .inline-team a  {
+  text-decoration: none;
+}
+
+@media(max-width: 52.5rem) {
+  .label-mobile {
+    display: inline;
+  }
+
+  .label-desktop {
+    display: none;
+  }
+}
+
+header {
+  padding: 0rem 1rem;
+  text-align: left;
+}
+
+nav {
+  margin-bottom: 0;
+}
+
+nav ul :first-child {
+  margin-left: 0;
+}
+
+main {
+  padding-top: 0;
+}
+
+summary:has(h2) {
+  display: block;
+}
+
+summary h2 {
+  display: list-item;
+}
+
+#favourites {
+  display: contents;
+}
+
+#favourites:not(:has(td)) {
+  display: none;
+}
+
+.top-cut {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.top-cut > div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loser a {
+  text-decoration: line-through underline;
+}
+
+table.div-table {
+  width: initial;
+  font-size: inherit;
+}
+
+tbody .name, tbody .name-team {
+  max-width: 12em;
+  white-space: normal;
+}
+
+.oppopp {
+  font-size: 0.85em;
+}
+
+.dq .name a {
+  text-decoration: line-through underline;
+}
+
+.dq .record, .dq .resistance {
+  text-decoration: line-through;
+}
+
+.team-link a, .name-team .team a {
+  display: grid;
+  grid-template-columns: repeat(6, min-content);
+  justify-content: center;
+}
+
+.name-team .team a {
+  grid-template-columns: repeat(3, min-content);
+}
+
+.name-team {
+  display: none;
+}
+
+@media (max-width: 52.5rem) {
+  .name, .team-link, .round {
+    display: none;
+  }
+
+  .name-team {
+    display: table-cell;
+  }
+}
+
+@media (max-width: 35rem) {
+  .resistance {
+    display: none;
+  }
+}
+

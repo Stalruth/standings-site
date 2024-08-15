@@ -1,0 +1,183 @@
+<header>
+  <nav>
+    <p>
+      <a href="/">Index</a>
+      &nbsp;/&nbsp;
+      <a href="/{{ tournament.season }}/">{{ tournament.season }}</a>
+      &nbsp;/&nbsp;
+      <a href="/{{ tournament.season }}/{{ tournament.id }}">{{ tournament.name }}</a>
+      &nbsp;/&nbsp;
+      {{ division.name }}
+    </p>
+  </nav>
+</header>
+<main>
+  <h1>{{ tournament.name }}</h1>
+
+  <p>This page is a best-effort attempt to calculate the standings with only publicly available data, and may contain errors.</p>
+
+  <details>
+    <summary>Links</summary>
+    <ul>
+      {% if tournament.rk9link %}
+        <li><a href="https://rk9.gg/roster/{{ tournament.rk9link }}">RK9 Roster</a></li>
+        <li><a href="https://rk9.gg/pairings/{{ tournament.rk9link }}">RK9 Pairings</a></li>
+      {% endif %}
+      {% if tournament.playlatamlink %}
+        <li><a href="https://pairings.playlatam.net/roster/{{ tournament.playlatamlink }}">Play LATAM Roster</a></li>
+        <li><a href="https://pairings.playlatam.net/matches/{{ tournament.playlatamlink }}">Play LATAM Pairings</a></li>
+      {% endif %}
+      <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/standings.json">Unofficial JSON standings</a></li>
+    </ul>
+  </details>
+
+  <p>There are {{ tournament.players[division.id] }} players competing in this tournament. This page was last updated at {{ tournament.lastUpdated | date: "%Y-%m-%d %H:%M" }}.</p>
+
+  <div id="favourites">
+    <h2>Favourites</h2>
+    <table>
+      <thead>
+        <th>Rank</th>
+        <th class="fave">Favourite</th>
+        <th class="name-team">
+          {% if division.players[2].team %}
+            Name / Team
+          {% else %}
+            Name
+          {% endif %}
+        </th>
+        <th class="name">Name</th>
+        {% if division.players[2].team %}
+          <th class="team-link">Team Link</th>
+        {% endif %}
+        <th class="record">Record</th>
+        <th class="resistance">Resistance</th>
+      </thead>
+      <tbody id="favourites-body">
+      </tbody>
+    </table>
+  </div>
+
+  {% if division.top_cut %}
+    <details open>
+      <summary>
+        <h2>Top Cut</h2>
+      </summary>
+      {% for round in division.top_cut.rounds reversed %}
+        <h3>
+          {{ forloop.rindex | cutRound: division.top_cut.totalRounds }}
+        </h3>
+        <div class="top-cut">
+          {% for match in round %}
+            <div>
+              {% for player in match.players %}
+                <div class="{% if match.winner != forloop.index0 %}loser{% endif %}">
+                  <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ player.id }}">
+                    {{ division.players[player.id].name }}
+                  </a>
+                </div>
+                {% if forloop.last == false %}
+                  <div>vs.</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </details>
+  {% endif %}
+
+  <h2>Standings</h2>
+
+  <table>
+    <thead>
+      <th>Rank</th>
+      <th class="fave">Favourite</th>
+      <th class="name-team">
+        {% if division.players[2].team %}
+          Name / Team
+        {% else %}
+          Name
+        {% endif %}
+      </th>
+      <th class="name">Name</th>
+      {% if division.players[2].team %}
+        <th class="team-link">Team Link</th>
+      {% endif %}
+      <th class="record">Record</th>
+      <th class="resistance">Resistance</th>
+    </thead>
+    <tbody id="standings-body">
+      {% for id in division.standings %}
+        <tr data-id="{{ id }}" {% if division.players[id].placing == 9999%}class="dq"{% endif %}>
+          <td>
+            {% if division.players[id].placing == 9999 %}
+              DQ
+            {% else %}
+              {{ division.players[id].placing }}
+            {% endif %}
+          </td>
+          <td class="fave"><button data-id="{{ id }}">☆</button></td>
+          <td class="name-team">
+            <div>
+              <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
+                {{ division.players[id].name }}
+              </a>
+            </div>
+            {% if division.players[id].team %}
+              <div class="team">
+                <a href="{{ division.players[id].paste }}">
+                  {{ division.players[id].team | summariseTeam: true }}
+                </a>
+              </div>
+            {% endif %}
+          </td>
+          <td class="name">
+            <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
+              {{ division.players[id].name }}
+            </a>
+          </td>
+          {% if division.players[id].team %}
+            <td class="team-link">
+                <a href="{{ division.players[id].paste }}">
+                  {{ division.players[id].team | summariseTeam }}
+                </a>
+            </td>
+          {% endif %}
+          <td class="record">
+            {% if division.players[id].record.ties == 0 %}
+              {{ division.players[id].record.wins }}-{{ division.players[id].record.losses }}
+            {% else %}
+              {{ division.players[id].record.wins }}-{{ division.players[id].record.losses }}-{{division.players[id].record.ties}}
+            {% endif %}
+          </td>
+          <td class="resistance">
+            {{ division.players[id].resistances.opp | percent }}
+              <span class="oppopp">
+                ({{ division.players[id].resistances.oppopp | percent }})
+              </span>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</main>
+
+<script type="module" src="/js/favourites.js"></script>
+<script type="module">
+  import { createFavsTable, getFavouriteHandler, updateFavouriteButtons } from '/js/favourites.js';
+
+  const storeName = 'favourites-{{ tournament.season }}-{{ tournament.id }}-{{ division.id }}';
+  updateFavouriteButtons(storeName);
+  document.querySelectorAll('button[data-id]').forEach((button) => {
+    button.addEventListener('click', getFavouriteHandler(storeName));
+  });
+  createFavsTable(storeName);
+  window.addEventListener('pageshow', (e) => {
+    if(e.persisted) {
+      updateFavouriteButtons(storeName);
+      createFavsTable();
+    }
+  });
+</script>
+

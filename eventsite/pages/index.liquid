@@ -1,0 +1,33 @@
+<header>
+  <nav>
+    <p>
+      <a href="/">Index</a>
+      &nbsp;/&nbsp;
+      <a href="/{{ tournament.season }}/">{{ tournament.season }}</a>
+      &nbsp;/&nbsp;
+      {{ tournament.name }}
+    </p>
+  </nav>
+</header>
+<main>
+  <h1>{{ tournament.name }}</h1>
+
+  <table class='div-table'>
+    <thead>
+      <tr>
+        <th>Division</th>
+        <th>Players</th>
+        <th>Winner</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for division in divisions %}
+        <tr>
+          <td><a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}">{{ division.name }}</td>
+          <td>{{ tournament.players[division.id] }}</td>
+          <td>{{ tournament.winners[division.id] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</main>

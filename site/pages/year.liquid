@@ -1,0 +1,34 @@
+<header>
+  <nav>
+    <p>
+      <a href="/">Index</a>
+      &nbsp;/&nbsp;
+      {{ year }}
+    </p>
+  </nav>
+</header>
+<main>
+  <h1>VGC {{ year }} Standings</h1>
+
+  {% for tournament in [year].tournaments reversed %}
+    <article>
+      {{ tournament.name }}
+      <ul>
+        <li>
+          <a href="/{{ year }}/{{ tournament.id }}/juniors">
+            Juniors
+          </a>
+        </li>
+        <li>
+          <a href="/{{ year }}/{{ tournament.id }}/seniors">
+            Seniors
+          </a>
+        </li>
+        <li>
+          <a href="/{{ year }}/{{ tournament.id }}/masters">
+            Masters
+          </a>
+        </li>
+    </article>
+  {% endfor %}
+</main>
