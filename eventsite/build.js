@@ -31,7 +31,13 @@ const divIds = {juniors: 0, seniors: 1, masters: 2};
 const players_divisions = divisions.map(div => div.standings.map(id => ({...div.players[id], division: div.id, divId: divIds[div.id]}))).flat();
 
 function summariseTeam(team) {
-  return Array.from({...team, length:6}).map(el => `<span style="${Icons.getPokemon(el?.species).style}"></span>`).join('');
+  let result = '';
+  for(let i = 0; i < 6; i++) {
+    const species = team[i]?.species ?? 'Unknown';
+    const iconData = Icons.getPokemon(species);
+    result += `<span class="pokemon-icon" title="${species}" style="background-position: ${iconData.left}px ${iconData.top}px"></span>`;
+  }
+  return result;
 }
 
 async function build() {

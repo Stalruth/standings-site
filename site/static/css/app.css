@@ -126,6 +126,14 @@ tbody .name, tbody .name-team {
   display: none;
 }
 
+.pokemon-icon {
+  display: inline-block;
+  width: 40px;
+  height: 30px;
+  image-rendering: pixelated;
+  background: transparent url('/sprites/pokemonicons-sheet.png') no-repeat scroll;
+}
+
 @media (max-width: 52.5rem) {
   .name, .team-link, .round {
     display: none;
