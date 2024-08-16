@@ -1,7 +1,6 @@
 function updateFavouriteButton(button, favs) {
   const value = Number(button.attributes.getNamedItem('data-id').value);
   const isFav = favs.includes(value);
-  console.log(value, favs);
   button.innerText = isFav ? '★' : '☆';
   if(isFav) {
     button.classList.add('faved');
@@ -42,7 +41,6 @@ function getFavouriteHandler(storeName) {
     } else {
       favs = favs.filter(el => el != value);
     }
-    console.log(value);
     document.querySelectorAll(`button[data-id="${value}"]`).forEach(button => updateFavouriteButton(button, favs));
     window.localStorage.setItem(storeName, JSON.stringify(favs));
     if(document.getElementById('favourites-body')) {
