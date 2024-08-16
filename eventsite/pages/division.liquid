@@ -154,11 +154,7 @@
             </td>
           {% endif %}
           <td class="record">
-            {% if division.players[id].record.ties == 0 %}
-              {{ division.players[id].record.wins }}-{{ division.players[id].record.losses }}
-            {% else %}
-              {{ division.players[id].record.wins }}-{{ division.players[id].record.losses }}-{{division.players[id].record.ties}}
-            {% endif %}
+            {{ division.players[id] | printRecord }}
           </td>
           <td class="resistance">
             {{ division.players[id].resistances.opp | percent }}
@@ -170,6 +166,7 @@
       {% endfor %}
     </tbody>
   </table>
+  <p>* This player received one or more losses for being late and will always lose tiebreakers to other players who were on time.</p>
 </main>
 
 <script type="module" src="/js/favourites.js"></script>

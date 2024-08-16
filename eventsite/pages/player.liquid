@@ -33,12 +33,7 @@
     </p>
   {% endif %}
   <p>
-    Record:
-    {% if player.record.ties == 0 %}
-      {{ player.record.wins }}-{{ player.record.losses }}
-    {% else %}
-      {{ player.record.wins }}-{{ player.record.losses }}-{{ player.record.ties }}
-    {% endif %}
+    Record: {{ player | printRecord }}
   </p>
   <p>
     Resistance: {{ player.resistances.opp | percent }}
@@ -151,11 +146,7 @@
               </td>
             {% endif %}
             <td class="record">
-              {% if player.record.ties == 0 %}
-                {{ divisions[player.divId].players[round.id].record.wins }}-{{ divisions[player.divId].players[round.id].record.losses }}
-              {% else %}
-                {{ divisions[player.divId].players[round.id].record.wins }}-{{ divisions[player.divId].players[round.id].record.losses }}-{{ divisions[player.divId].players[round.id].record.ties }}
-              {% endif %}
+              {{ divisions[player.divId].players[round.id] | printRecord }}
             </td>
           </tr>
         {% endfor %}

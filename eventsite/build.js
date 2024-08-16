@@ -40,6 +40,20 @@ function summariseTeam(team) {
   return result;
 }
 
+function printRecord(player) {
+  if(!player) {
+    return '-'
+  }
+  let result = `${player.record.wins}-${player.record.losses}`;
+  if (player.record.ties !== 0) {
+    result += `-${player.record.ties}`;
+  }
+  if (player.rounds[0].rounds[0].id === 0 && player.rounds[0].rounds[0].result === 'L') {
+    result += `<abbr title="Late">*</abbr>`;
+  }
+  return result
+}
+
 async function build() {
   const input = process.argv.filter(el=>el.startsWith('--input')).map(el=>el.split('=')).pop()?.[1] ?? 'pages';
   const output = process.argv.filter(el=>el.startsWith('--output')).map(el=>el.split('=')).pop()?.[1] ?? '_site';
@@ -52,6 +66,7 @@ async function build() {
       eleventyConfig.addGlobalData('players_divisions', players_divisions);
       eleventyConfig.addLiquidFilter('percent', num => `${(num * 100).toFixed(2)}%`);
       eleventyConfig.addLiquidFilter('summariseTeam', summariseTeam);
+      eleventyConfig.addLiquidFilter('printRecord', printRecord);
       eleventyConfig.addLiquidFilter('cutRound', (round, totalRounds) => round === totalRounds ? 'Finals' : `Top ${2 ** (totalRounds - round + 1)}`);
       eleventyConfig.addLiquidFilter('roundsPlayed', (rounds) => rounds.reduce((acc, cur) => acc + cur.rounds.length, 0))
     }
