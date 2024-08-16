@@ -18,16 +18,25 @@
 
   <details>
     <summary>Links</summary>
+    {% if tournament.rk9link %}
+      <p>RK9:</p>
+      <ul>
+        <li><a href="https://rk9.gg/roster/{{ tournament.rk9link }}">Roster</a></li>
+        <li><a href="https://rk9.gg/pairings/{{ tournament.rk9link }}">Pairings</a></li>
+      </ul>
+    {% endif %}
+    {% if tournament.playlatamlink %}
+      <p>PlayLATAM:</p>
+      <ul>
+        <li><a href="https://pairings.playlatam.net/roster/{{ tournament.playlatamlink }}">Roster</a></li>
+        <li><a href="https://pairings.playlatam.net/matches/{{ tournament.playlatamlink }}">Pairings</a></li>
+      </ul>
+    {% endif %}
+    <p>Unofficial JSON data:</p>
     <ul>
-      {% if tournament.rk9link %}
-        <li><a href="https://rk9.gg/roster/{{ tournament.rk9link }}">RK9 Roster</a></li>
-        <li><a href="https://rk9.gg/pairings/{{ tournament.rk9link }}">RK9 Pairings</a></li>
-      {% endif %}
-      {% if tournament.playlatamlink %}
-        <li><a href="https://pairings.playlatam.net/roster/{{ tournament.playlatamlink }}">Play LATAM Roster</a></li>
-        <li><a href="https://pairings.playlatam.net/matches/{{ tournament.playlatamlink }}">Play LATAM Pairings</a></li>
-      {% endif %}
-      <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/standings.json">Unofficial JSON standings</a></li>
+      <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/tournament.json">Tournament Information</a></li>
+      <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/players.json">Player Data</a></li>
+      <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/standings.json">Standings</a></li>
     </ul>
   </details>
 
