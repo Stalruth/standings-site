@@ -1,6 +1,16 @@
-function updateFavouriteButton(button, favs) {
+
+const favs = {
+  storeName: '',
+  players: []
+};
+
+function saveFavs() {
+    window.localStorage.setItem(favs.storeName, JSON.stringify(favs.players));
+}
+
+function updateFavouriteButton(button) {
   const value = Number(button.attributes.getNamedItem('data-id').value);
-  const isFav = favs.includes(value);
+  const isFav = favs.players.includes(value);
   button.innerText = isFav ? '★' : '☆';
   if(isFav) {
     button.classList.add('faved');
@@ -12,9 +22,10 @@ function updateFavouriteButton(button, favs) {
 }
 
 function updateFavouriteButtons(storeName) {
-  const favs = JSON.parse(window.localStorage.getItem(storeName) ?? '[]').map(el => Number(el));
+  favs.storeName = storeName;
+  favs.players = JSON.parse(window.localStorage.getItem(storeName) ?? '[]').map(el => Number(el));
   document.querySelectorAll('button[data-id]').forEach((button) => {
-    updateFavouriteButton(button, favs);
+    updateFavouriteButton(button, favs.players);
   });
 }
 
@@ -33,19 +44,22 @@ function createFavsTable(storeName) {
 
 function getFavouriteHandler(storeName) {
   return function (e) {
-    let favs = JSON.parse(window.localStorage.getItem(storeName) ?? '[]').map(el => Number(el));
     const value = Number(e.target.attributes.getNamedItem('data-id').value);
-    const isFav = !favs.includes(value);
+    const isFav = !favs.players.includes(value);
     if(isFav) {
-      favs = [...favs, value];
+      favs.players = [...favs.players, value];
+      updateFavouriteButton(e.target);
+      if(document.getElementById('favourites-body')) {
+        createFavsTable(storeName);
+      }
     } else {
-      favs = favs.filter(el => el != value);
+      favs.players = favs.players.filter(el => el != value);
+      document.querySelectorAll(`button[data-id="${value}"]`).forEach(button => updateFavouriteButton(button));
+      if(document.getElementById('favourites-body')) {
+        document.querySelector(`#favourites-body tr[data-id="${value}"]`).remove();
+      }
     }
-    document.querySelectorAll(`button[data-id="${value}"]`).forEach(button => updateFavouriteButton(button, favs));
-    window.localStorage.setItem(storeName, JSON.stringify(favs));
-    if(document.getElementById('favourites-body')) {
-      createFavsTable(storeName);
-    }
+    saveFavs();
   };
 }
 
