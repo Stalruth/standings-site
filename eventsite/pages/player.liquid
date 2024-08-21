@@ -104,7 +104,7 @@
             <td class="name-team">
               <div>
                 {% if round.id != 0 %}
-                  <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.divId }}/{{ round.id }}">
+                  <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
                     {{ divisions[player.divId].players[round.id].name }}
                   </a>
                 {% else %}
