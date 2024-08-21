@@ -96,8 +96,10 @@
                 Loss
               {% elsif round.result == 'W' %}
                 Win
-              {% else %}
+              {% elsif round.result == 'T' %}
                 Tie
+              {% else %}
+                Ongoing
               {% endif %}
             </td>
             <td class="fave"><button data-id="{{ round.id }}">☆</button></td>
