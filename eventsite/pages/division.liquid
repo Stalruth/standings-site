@@ -81,7 +81,7 @@
             {% if match.players.size == 2 %}
               <div>
                 {% for player in match.players %}
-                  <div class="{% if match.winner != forloop.index0 %}loser{% endif %}">
+                  <div class="{% if match.winner != forloop.index0 and match.winner != null %}loser{% endif %}">
                     <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ player.id }}">
                       {{ division.players[player.id].name }}
                     </a>

@@ -76,14 +76,21 @@ summary h2 {
 
 .top-cut {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-around;
+  gap: 1rem;
+}
+
+.top-cut.top-cut-grid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
 }
 
 .top-cut > div {
   display: flex;
   align-items: center;
   flex-direction: column;
+  text-align: center;
 }
 
 .loser a {
@@ -135,6 +142,10 @@ tbody .name, tbody .name-team {
 }
 
 @media (max-width: 52.5rem) {
+  .top-cut.top-cut-grid {
+    grid-template-columns: repeat(2, auto);
+  }
+
   .name, .team-link, .round {
     display: none;
   }
@@ -145,6 +156,10 @@ tbody .name, tbody .name-team {
 }
 
 @media (max-width: 35rem) {
+  .top-cut-grid {
+    grid-template-columns: auto;
+  }
+
   .resistance {
     display: none;
   }
