@@ -14,14 +14,24 @@ for (let division of ['Juniors', 'Seniors', 'Masters']) {
   const divData = {
     'id': id,
     'name': division,
-    'standings': (await import(`${data}/${id}/standings.json`, { with: { type: 'json' }})).default,
-    'players': (await import(`${data}/${id}/players.json`, { with: { type: 'json' }})).default
   };
+
+  try {
+    divData['standings'] = (await import(`${data}/${id}/standings.json`, { with { type: 'json' }})).default;
+    } catch (e) {
+      divData['standings'] = [];
+    }
+
+  try {
+    divData['players'] = (await import(`${data}/${id}/players.json`, { with { type: 'json' }})).default;
+    } catch (e) {
+      divData['players'] = {};
+    }
 
   try {
     divData['top_cut'] = (await import(`${data}/${id}/top-cut.json`, { with: { type: 'json' }})).default;
   } catch(e) {
-    divData['top_cut'] = {}
+    divData['top_cut'] = undefined;
   }
 
   divisions.push(divData);
