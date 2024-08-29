@@ -17,13 +17,13 @@ for (let division of ['Juniors', 'Seniors', 'Masters']) {
   };
 
   try {
-    divData['standings'] = (await import(`${data}/${id}/standings.json`, { with { type: 'json' }})).default;
+    divData['standings'] = (await import(`${data}/${id}/standings.json`, { with: { type: 'json' }})).default;
     } catch (e) {
       divData['standings'] = [];
     }
 
   try {
-    divData['players'] = (await import(`${data}/${id}/players.json`, { with { type: 'json' }})).default;
+    divData['players'] = (await import(`${data}/${id}/players.json`, { with: { type: 'json' }})).default;
     } catch (e) {
       divData['players'] = {};
     }
