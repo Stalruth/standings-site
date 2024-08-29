@@ -72,29 +72,31 @@
       <summary>
         <h2>Top Cut</h2>
       </summary>
-      {% for round in division.top_cut.rounds reversed %}
-        <h3>
-          {{ forloop.rindex | cutRound: division.top_cut.totalRounds }}
-        </h3>
-        <div class="top-cut {% if round.size > 2 %}top-cut-grid{% endif %}">
-          {% for match in round %}
-            {% if match.players.size == 2 %}
-              <div>
-                {% for player in match.players %}
-                  <div class="{% if match.winner != forloop.index0 and match.winner != null %}loser{% endif %}">
-                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ player.id }}">
-                      {{ division.players[player.id].name }}
-                    </a>
-                  </div>
-                  {% if forloop.last == false %}
-                    <div>vs.</div>
-                  {% endif %}
-                {% endfor %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endfor %}
+      <div class="top-cut">
+        {% for round in division.top_cut.rounds reversed %}
+          <h3>
+            {{ forloop.rindex | cutRound: division.top_cut.totalRounds }}
+          </h3>
+          <div {% if round.size > 2 %}class="top-cut-grid"{% endif %}>
+            {% for match in round %}
+              {% if match.players.size == 2 %}
+                <div class="match">
+                  {% for player in match.players %}
+                    <div class="{% if match.winner != forloop.index0 and match.winner != null %}loser{% endif %}">
+                      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ player.id }}">
+                        {{ division.players[player.id].name }}
+                      </a>
+                    </div>
+                    {% if forloop.last == false %}
+                      <div>vs.</div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
     </details>
   {% endif %}
 
