@@ -109,8 +109,18 @@ summary h2 {
   text-decoration: line-through underline;
 }
 
-table.div-table {
-  width: initial;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container h1 {
+  width: 100%;
+}
+
+.container table {
+  width: fit-content;
   font-size: inherit;
 }
 
