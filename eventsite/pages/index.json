@@ -1,7 +1,7 @@
 {
   "permalink": "{{ tournament.season }}/{{ tournament.id }}/",
   "eleventyComputed": {
-    "title": "{{ tournament.id }} - VGC Homemade Standings",
+    "title": "{{ tournament.name }} - VGC Homemade Standings",
     "description": "Homemade Standings for the {{ tournament.name }}."
   }
 }
