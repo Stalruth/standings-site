@@ -124,16 +124,40 @@ summary h2 {
   font-size: inherit;
 }
 
-tbody .name, tbody .name-team {
+th p {
+  margin: 0.5rem 0;
+}
+
+th p:first-child {
+  margin-top: 0rem;
+}
+
+th p:last-child {
+  margin-bottom: 0rem;
+}
+
+.label-mobile {
+  display: none;
+}
+
+tbody .name-cell, tbody .name-team {
   max-width: 12em;
   white-space: normal;
+}
+
+.name-team .name {
+  overflow-wrap: anywhere;
+}
+
+.record-resistance {
+  display: none;
 }
 
 .oppopp {
   font-size: 0.85em;
 }
 
-.dq .name a {
+.dq .name a, .dq .name-cell a {
   text-decoration: line-through underline;
 }
 
@@ -141,7 +165,11 @@ tbody .name, tbody .name-team {
   text-decoration: line-through;
 }
 
-.team-link a, .name-team .team a {
+.name-team .team {
+  padding-top: 0.5rem;
+}
+
+.team-cell a, .name-team .team a {
   display: grid;
   grid-template-columns: repeat(6, min-content);
   justify-content: center;
@@ -151,7 +179,7 @@ tbody .name, tbody .name-team {
   grid-template-columns: repeat(3, min-content);
 }
 
-.name-team {
+.name-team, .round-result {
   display: none;
 }
 
@@ -164,15 +192,23 @@ tbody .name, tbody .name-team {
 }
 
 @media (max-width: 52.5rem) {
+  .label-mobile {
+    display: inline;
+  }
+
+  .label-desktop {
+    display: none;
+  }
+
   .top-cut {
     grid-template-columns: [all-start] repeat(2, auto) [all-end];
   }
 
-  .name, .team-link, .round {
+  .name-cell, .team-cell, .round, .result {
     display: none;
   }
 
-  .name-team {
+  .name-team, .round-result {
     display: table-cell;
   }
 }
@@ -182,7 +218,11 @@ tbody .name, tbody .name-team {
     grid-template-columns: [all-start] auto [all-end];
   }
 
-  .resistance {
+  .record-resistance {
+    display: table-cell;
+  }
+
+  .record, .resistance {
     display: none;
   }
 }

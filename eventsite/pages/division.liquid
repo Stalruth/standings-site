@@ -47,18 +47,26 @@
     <table>
       <thead>
         <th>Rank</th>
-        <th class="fave">Favourite</th>
+        <th class="fave">
+          <span class="label-desktop">Favourite</span>
+          <span class="label-mobile">Fave</span>
+        </th>
         <th class="name-team">
           {% if division.players[2].team %}
-            Name / Team
+            <p>Name</p>
+            <p>Team</p>
           {% else %}
-            Name
+            <p>Name</p>
           {% endif %}
         </th>
-        <th class="name">Name</th>
+        <th class="name-cell">Name</th>
         {% if division.players[2].team %}
-          <th class="team-link">Team Link</th>
+          <th class="team-cell">Team Link</th>
         {% endif %}
+        <th class="record-resistance">
+          <p>Record</p>
+          <p>Op. Win %</p>
+        </th>
         <th class="record">Record</th>
         <th class="resistance">Resistance</th>
       </thead>
@@ -105,18 +113,26 @@
   <table>
     <thead>
       <th>Rank</th>
-      <th class="fave">Favourite</th>
+      <th class="fave">
+        <span class="label-desktop">Favourite</span>
+        <span class="label-mobile">Fave</span>
+      </th>
       <th class="name-team">
         {% if division.players[2].team %}
-          Name / Team
+          <p>Name</p>
+          <p>Team</p>
         {% else %}
-          Name
+          <p>Name</p>
         {% endif %}
       </th>
-      <th class="name">Name</th>
+      <th class="name-cell">Name</th>
       {% if division.players[2].team %}
-        <th class="team-link">Team Link</th>
+        <th class="team-cell">Team Link</th>
       {% endif %}
+      <th class="record-resistance">
+        <p>Record</p>
+        <p>Op. Win %</p>
+      </th>
       <th class="record">Record</th>
       <th class="resistance">Resistance</th>
     </thead>
@@ -132,7 +148,7 @@
           </td>
           <td class="fave"><button data-id="{{ id }}">☆</button></td>
           <td class="name-team">
-            <div>
+            <div class="name">
               <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
                 {{ division.players[id].name }}
               </a>
@@ -145,18 +161,22 @@
               </div>
             {% endif %}
           </td>
-          <td class="name">
+          <td class="name-cell">
             <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
               {{ division.players[id].name }}
             </a>
           </td>
           {% if division.players[id].team %}
-            <td class="team-link">
+            <td class="team-cell">
                 <a href="{{ division.players[id].paste }}">
                   {{ division.players[id].team | summariseTeam }}
                 </a>
             </td>
           {% endif %}
+          <td class="record-resistance">
+            <p>{{ division.players[id] | printRecord }}</p>
+            <p>{{ division.players[id].resistances.opp | percent }}</p>
+          </td>
           <td class="record">
             {{ division.players[id] | printRecord }}
           </td>
@@ -183,10 +203,11 @@
     button.addEventListener('click', getFavouriteHandler(storeName));
   });
   createFavsTable(storeName);
+
   window.addEventListener('pageshow', (e) => {
     if(e.persisted) {
       updateFavouriteButtons(storeName);
-      createFavsTable();
+      createFavsTable(storeName);
     }
   });
 </script>

@@ -79,6 +79,7 @@ async function build() {
       eleventyConfig.addLiquidFilter('printRecord', printRecord);
       eleventyConfig.addLiquidFilter('cutRound', (round, totalRounds) => round === totalRounds ? 'Finals' : `Top ${2 ** (totalRounds - round + 1)}`);
       eleventyConfig.addLiquidFilter('roundsPlayed', (rounds) => rounds.reduce((acc, cur) => acc + cur.rounds.length, 0))
+      eleventyConfig.addLiquidFilter('resultName', (result) => ({'L': 'Loss', 'W': 'Win', 'T': 'Tie'}[result] ?? 'Ongoing'));
     }
   });
 

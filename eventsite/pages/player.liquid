@@ -61,50 +61,59 @@
         {{ roundset.name }}
       </caption>
       <thead>
+        <th class="round-result">
+          <p>Round</p>
+          <p>Result</p>
+        </th>
         <th class="round">Round</th>
-        <th>Result</th>
+        <th class="result">Result</th>
         <th class="fave">Favourite</th>
         <th class="name-team">
           {% if player.team %}
-            Name / Team
+            <p>Name</p>
+            <p>Team Link</p>
           {% else %}
-            Name
+            <p>Name</p>
           {% endif %}
         </th>
-        <th class="name">Name</th>
+        <th class="name-cell">Name</th>
         {% if player.team %}
-          <th class="team-link">Team Link</th>
+          <th class="team-cell">Team Link</th>
         {% endif %}
-        <th class="record">Record</th>
+        <th>Record</th>
       </thead>
       <tbody>
         {% if forloop.first and player.drop != -1 %}
-          <td colspan="6">Dropped at Round {{ player.drop }}</td>
+          <td colspan="7">Dropped at Round {{ player.drop }}</td>
         {% endif %}
         {% for round in roundset.rounds reversed %}
           <tr>
+            <td class="round-result">
+              <p>
+                {% if roundset.name == 'Top Cut' %}
+                  {{ forloop.rindex | cutRound: tournament.tournamentStructure[player.division].topCut }}
+                {% else %}
+                  {{ round_counter }}
+                {% endif %}
+              </p>
+              <p>
+                {{ round.result | resultName }}
+              </p>
+            </td>
             <td class="round">
               {% if roundset.name == 'Top Cut' %}
                 {{ forloop.rindex | cutRound: tournament.tournamentStructure[player.division].topCut }}
               {% else %}
                 {{ round_counter }}
               {% endif %}
-              {% assign round_counter = round_counter | minus: 1 %}
             </td>
-            <td>
-              {% if round.result == 'L' %}
-                Loss
-              {% elsif round.result == 'W' %}
-                Win
-              {% elsif round.result == 'T' %}
-                Tie
-              {% else %}
-                Ongoing
-              {% endif %}
+            {% assign round_counter = round_counter | minus: 1 %}
+            <td class="result">
+              {{ round.result | resultName }}
             </td>
             <td class="fave"><button data-id="{{ round.id }}">☆</button></td>
             <td class="name-team">
-              <div>
+              <div class="name">
                 {% if round.id != 0 %}
                   <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
                     {{ divisions[player.divId].players[round.id].name }}
@@ -125,7 +134,7 @@
                 </div>
               {% endif %}
             </td>
-            <td class="name">
+            <td class="name-cell">
               {% if round.id != 0 %}
                 <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
                   {{ divisions[player.divId].players[round.id].name }}
@@ -139,7 +148,7 @@
               {% endif %}
             </td>
             {% if player.team %}
-              <td class="team-link">
+              <td class="team-cell">
                 {% if round.id != 0 %}
                   <a href="{{ divisions[player.divId].players[round.id].paste }}">
                     {{ divisions[player.divId].players[round.id].team | summariseTeam }}
@@ -147,7 +156,7 @@
               {% endif %}
               </td>
             {% endif %}
-            <td class="record">
+            <td>
               {{ divisions[player.divId].players[round.id] | printRecord }}
             </td>
           </tr>
