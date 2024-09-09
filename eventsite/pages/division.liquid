@@ -51,24 +51,22 @@
           <span class="label-desktop">Favourite</span>
           <span class="label-mobile">Fave</span>
         </th>
-        <th class="name-team">
-          {% if division.players[2].team %}
-            <p>Name</p>
-            <p>Team</p>
-          {% else %}
-            <p>Name</p>
-          {% endif %}
-        </th>
         <th class="name-cell">Name</th>
         {% if division.players[2].team %}
-          <th class="team-cell">Team Link</th>
+          <th class="name-team">
+            <p class="name">Name</p>
+            <p class="team">Team</p>
+          </th>
+        {% else %}
+          <th class="cell-mobile">
+            <p class="name">Name</p>
+          </th>
         {% endif %}
         <th class="record-resistance">
-          <p>Record</p>
-          <p>Op. Win %</p>
+          <p class="record">Record</p>
+          <p class="resistance">Op. Win %</p>
         </th>
-        <th class="record">Record</th>
-        <th class="resistance">Resistance</th>
+        <th class="resistance-cell">Resistance</th>
       </thead>
       <tbody id="favourites-body">
       </tbody>
@@ -117,24 +115,22 @@
         <span class="label-desktop">Favourite</span>
         <span class="label-mobile">Fave</span>
       </th>
-      <th class="name-team">
-        {% if division.players[2].team %}
-          <p>Name</p>
-          <p>Team</p>
-        {% else %}
-          <p>Name</p>
-        {% endif %}
-      </th>
       <th class="name-cell">Name</th>
       {% if division.players[2].team %}
-        <th class="team-cell">Team Link</th>
+        <th class="name-team">
+          <p class="name">Name</p>
+          <p class="team">Team Link</p>
+        </th>
+      {% else %}
+        <th class="cell-mobile">
+          <p class="name">Name</p>
+        </th>
       {% endif %}
       <th class="record-resistance">
-        <p>Record</p>
-        <p>Op. Win %</p>
+        <p class="record">Record</p>
+        <p class="resistance">Op. Win %</p>
       </th>
-      <th class="record">Record</th>
-      <th class="resistance">Resistance</th>
+      <th class="resistance-cell">Resistance</th>
     </thead>
     <tbody id="standings-body">
       {% for id in division.standings %}
@@ -147,40 +143,38 @@
             {% endif %}
           </td>
           <td class="fave"><button data-id="{{ id }}">☆</button></td>
-          <td class="name-team">
-            <div class="name">
-              <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
-                {{ division.players[id].name }}
-              </a>
-            </div>
-            {% if division.players[id].team %}
-              <div class="team">
-                <a href="{{ division.players[id].paste }}">
-                  {{ division.players[id].team | summariseTeam: true }}
-                </a>
-              </div>
-            {% endif %}
-          </td>
           <td class="name-cell">
             <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
               {{ division.players[id].name }}
             </a>
           </td>
           {% if division.players[id].team %}
-            <td class="team-cell">
-                <a href="{{ division.players[id].paste }}">
-                  {{ division.players[id].team | summariseTeam }}
+            <td class="name-team">
+              <div class="name">
+                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
+                  {{ division.players[id].name }}
                 </a>
+              </div>
+              <div class="team">
+                <a href="{{ division.players[id].paste }}">
+                  {{ division.players[id].team | summariseTeam: true }}
+                </a>
+              </div>
+            </td>
+          {% else %}
+            <td class="cell-mobile">
+              <div class="name">
+                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
+                  {{ division.players[id].name }}
+                </a>
+              </div>
             </td>
           {% endif %}
           <td class="record-resistance">
-            <p>{{ division.players[id] | printRecord }}</p>
-            <p>{{ division.players[id].resistances.opp | percent }}</p>
+            <p class="record">{{ division.players[id] | printRecord }}</p>
+            <p class="resistance">{{ division.players[id].resistances.opp | percent }}</p>
           </td>
-          <td class="record">
-            {{ division.players[id] | printRecord }}
-          </td>
-          <td class="resistance">
+          <td class="resistance-cell">
             {{ division.players[id].resistances.opp | percent }}
               <span class="oppopp">
                 ({{ division.players[id].resistances.oppopp | percent }})

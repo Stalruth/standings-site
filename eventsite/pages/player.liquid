@@ -22,7 +22,7 @@
 
   {% if player.top %}
     <p>
-      Final placing: 
+      Final placing:
       {% if player.top == 1 %}
         1st
       {% elsif player.top == 2 %}
@@ -62,23 +62,24 @@
       </caption>
       <thead>
         <th class="round-result">
-          <p>Round</p>
-          <p>Result</p>
+          <p class="round">Round</p>
+          <p class="result">Result</p>
         </th>
-        <th class="round">Round</th>
-        <th class="result">Result</th>
-        <th class="fave">Favourite</th>
-        <th class="name-team">
-          {% if player.team %}
-            <p>Name</p>
-            <p>Team Link</p>
-          {% else %}
-            <p>Name</p>
-          {% endif %}
+        <th class="result-cell">Result</th>
+        <th class="fave">
+          <span class="label-desktop">Favourite</span>
+          <span class="label-mobile">Fave</span>
         </th>
         <th class="name-cell">Name</th>
         {% if player.team %}
-          <th class="team-cell">Team Link</th>
+          <th class="name-team">
+            <p class="name">Name</p>
+            <p class="team">Team Link</p>
+          </th>
+        {% else %}
+          <th class="cell-mobile">
+            <p class="name">Name</p>
+          </th>
         {% endif %}
         <th>Record</th>
       </thead>
@@ -89,51 +90,22 @@
         {% for round in roundset.rounds reversed %}
           <tr>
             <td class="round-result">
-              <p>
+              <p class="round">
                 {% if roundset.name == 'Top Cut' %}
                   {{ forloop.rindex | cutRound: tournament.tournamentStructure[player.division].topCut }}
                 {% else %}
                   {{ round_counter }}
                 {% endif %}
               </p>
-              <p>
+              <p class="result">
                 {{ round.result | resultName }}
               </p>
             </td>
-            <td class="round">
-              {% if roundset.name == 'Top Cut' %}
-                {{ forloop.rindex | cutRound: tournament.tournamentStructure[player.division].topCut }}
-              {% else %}
-                {{ round_counter }}
-              {% endif %}
-            </td>
             {% assign round_counter = round_counter | minus: 1 %}
-            <td class="result">
+            <td class="result-cell">
               {{ round.result | resultName }}
             </td>
             <td class="fave"><button data-id="{{ round.id }}">☆</button></td>
-            <td class="name-team">
-              <div class="name">
-                {% if round.id != 0 %}
-                  <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
-                    {{ divisions[player.divId].players[round.id].name }}
-                  </a>
-                {% else %}
-                  {% if round.result == 'L' %}
-                    <b>LATE</b>
-                  {% elsif round.result == 'W' %}
-                    <b>BYE</b>
-                  {% endif %}
-                {% endif %}
-              </div>
-              {% if player.team and divisions[player.divId].players[round.id].team %}
-                <div class="team">
-                  <a href="{{ divisions[player.divId].players[round.id].paste }}">
-                    {{ divisions[player.divId].players[round.id].team | summariseTeam: true }}
-                  </a>
-                </div>
-              {% endif %}
-            </td>
             <td class="name-cell">
               {% if round.id != 0 %}
                 <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
@@ -148,12 +120,43 @@
               {% endif %}
             </td>
             {% if player.team %}
-              <td class="team-cell">
-                {% if round.id != 0 %}
-                  <a href="{{ divisions[player.divId].players[round.id].paste }}">
-                    {{ divisions[player.divId].players[round.id].team | summariseTeam }}
-                  </a>
-              {% endif %}
+              <td class="name-team">
+                <div class="name">
+                  {% if round.id != 0 %}
+                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
+                      {{ divisions[player.divId].players[round.id].name }}
+                    </a>
+                  {% else %}
+                    {% if round.result == 'L' %}
+                      <b>LATE</b>
+                    {% elsif round.result == 'W' %}
+                      <b>BYE</b>
+                    {% endif %}
+                  {% endif %}
+                </div>
+                {% if divisions[player.divId].players[round.id].team %}
+                  <div class="team">
+                    <a href="{{ divisions[player.divId].players[round.id].paste }}">
+                      {{ divisions[player.divId].players[round.id].team | summariseTeam: true }}
+                    </a>
+                  </div>
+                {% endif %}
+              </td>
+            {% else %}
+              <td class="cell-mobile">
+                <div class="name">
+                  {% if round.id != 0 %}
+                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
+                      {{ divisions[player.divId].players[round.id].name }}
+                    </a>
+                  {% else %}
+                    {% if round.result == 'L' %}
+                      <b>LATE</b>
+                    {% elsif round.result == 'W' %}
+                      <b>BYE</b>
+                    {% endif %}
+                  {% endif %}
+                </div>
               </td>
             {% endif %}
             <td>

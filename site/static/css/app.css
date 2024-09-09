@@ -19,21 +19,21 @@ button.faved {
   color: #d06f00;
 }
 
-.label-mobile {
+.label-mobile, .cell-mobile {
   display: none;
 }
 
 .label-desktop {
-  display: inline;
-}
-
-.team-cell a, .inline-team a  {
-  text-decoration: none;
+  display: initial;
 }
 
 @media(max-width: 52.5rem) {
   .label-mobile {
-    display: inline;
+    display: initial;
+  }
+
+  .cell-mobile {
+    display: table-cell;
   }
 
   .label-desktop {
@@ -136,20 +136,29 @@ th p:last-child {
   margin-bottom: 0rem;
 }
 
-.label-mobile {
-  display: none;
+th .team {
+  margin: 0;
 }
 
-tbody .name-cell, tbody .name-team {
+tbody .name-cell, .name a {
   max-width: 12em;
   white-space: normal;
 }
 
-.name-team .name {
+.round, .record {
+  margin: 0;
+}
+
+.name {
+  margin-bottom: 0.5rem;
   overflow-wrap: anywhere;
 }
 
-.record-resistance {
+.cell-mobile .name {
+  margin-bottom: 0rem;
+}
+
+.name, .result {
   display: none;
 }
 
@@ -157,30 +166,22 @@ tbody .name-cell, tbody .name-team {
   font-size: 0.85em;
 }
 
+.resistance {
+  display: none;
+}
+
 .dq .name a, .dq .name-cell a {
   text-decoration: line-through underline;
 }
 
-.dq .record, .dq .resistance {
+.dq .record, .dq .resistance-cell {
   text-decoration: line-through;
 }
 
-.name-team .team {
-  padding-top: 0.5rem;
-}
-
-.team-cell a, .name-team .team a {
+.team a {
   display: grid;
   grid-template-columns: repeat(6, min-content);
   justify-content: center;
-}
-
-.name-team .team a {
-  grid-template-columns: repeat(3, min-content);
-}
-
-.name-team, .round-result {
-  display: none;
 }
 
 .pokemon-icon {
@@ -192,25 +193,34 @@ tbody .name-cell, tbody .name-team {
 }
 
 @media (max-width: 52.5rem) {
-  .label-mobile {
-    display: inline;
-  }
-
-  .label-desktop {
-    display: none;
-  }
-
   .top-cut {
     grid-template-columns: [all-start] repeat(2, auto) [all-end];
   }
 
-  .name-cell, .team-cell, .round, .result {
+  .name, .result {
+    display: block;
+  }
+
+  .name-cell, .result-cell {
     display: none;
   }
 
-  .name-team, .round-result {
+  .name-team {
     display: table-cell;
   }
+
+  .round {
+    margin: 0.75rem 0rem;
+  }
+
+  th p.round {
+    margin-bottom: 0.5rem;
+  }
+
+  .team a {
+    grid-template-columns: repeat(3, min-content);
+  }
+
 }
 
 @media (max-width: 35rem) {
@@ -218,11 +228,19 @@ tbody .name-cell, tbody .name-team {
     grid-template-columns: [all-start] auto [all-end];
   }
 
-  .record-resistance {
-    display: table-cell;
+  .resistance {
+    display: block;
   }
 
-  .record, .resistance {
+  .record {
+    margin: 0.75rem 0rem;
+  }
+
+  th p.record {
+    margin-bottom: 0.5rem;
+  }
+
+  .resistance-cell {
     display: none;
   }
 }
