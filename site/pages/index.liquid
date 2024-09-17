@@ -8,27 +8,31 @@
 <main>
   <h1>Pokémon VGC Standings</h1>
 
-  <h2>VGC 2024 Standings</h2>
+  <h2>VGC 2025 Standings</h2>
 
-  {% for tournament in 2024.tournaments reversed %}
+  {% for tournament in 2025.tournaments reversed %}
     <article>
       {{ tournament.name }}
       <ul>
         <li>
-          <a href="/2024/{{ tournament.id }}/juniors">
+          <a href="/2025/{{ tournament.id }}/juniors">
             Juniors
           </a>
         </li>
         <li>
-          <a href="/2024/{{ tournament.id }}/seniors">
+          <a href="/2025/{{ tournament.id }}/seniors">
             Seniors
           </a>
         </li>
         <li>
-          <a href="/2024/{{ tournament.id }}/masters">
+          <a href="/2025/{{ tournament.id }}/masters">
             Masters
           </a>
         </li>
     </article>
   {% endfor %}
+
+  <p>
+    <a href="/2024/">VGC 2024 Standings</a>
+  </p>
 </main>

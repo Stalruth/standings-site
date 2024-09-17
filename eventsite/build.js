@@ -1,16 +1,12 @@
 import Eleventy from '@11ty/eleventy';
 import { Icons } from '@pkmn/img';
 
-// const { default: tours2024 } = await import(`_data/2024/tournaments.json`, {with: {type: 'json'}});
 const data = process.argv.filter(el=>el.startsWith('--data')).map(el=>el.split('=')).pop()?.[1] ?? './_data';
 const { default: tournament } = await import(`${data}/tournament.json`, { with: { type: 'json' }});
 
 const divisions = [];
 for (let division of ['Juniors', 'Seniors', 'Masters']) {
   const id = division.toLowerCase();
-  if (!tournament.players[id]) {
-    continue;
-  }
   const divData = {
     'id': id,
     'name': division,
