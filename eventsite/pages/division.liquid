@@ -14,7 +14,18 @@
 <main>
   <h1>{{ tournament.name }}</h1>
 
-  <p>This page is a best-effort attempt to calculate the standings with only publicly available data, and may contain errors.</p>
+  <div class="warning">
+    <p>
+    This page is a best-effort attempt to calculate the standings with only publicly available data and may contain errors{% if division.id != "masters" %}, especially in the {{ division.name }} division{% endif %}.
+      It is not authoritative and cannot be used to determine prizing.
+    </p>
+
+    {% if tournament.rk9link %}
+      <p>For the official standings, please refer to the RK9 links in the dropdown below.</p>
+    {% elsif tournament.playlatamlink %}
+      <p>For the official standings, please refer to the PlayLATAM links in the dropdown below.</p>
+    {% endif %}
+  </div>
 
   <details>
     <summary>Links</summary>
