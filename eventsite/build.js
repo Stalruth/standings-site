@@ -36,10 +36,30 @@ for (let division of ['Juniors', 'Seniors', 'Masters']) {
 const divIds = {juniors: 0, seniors: 1, masters: 2};
 const players_divisions = divisions.map(div => div.standings.map(id => ({...div.players[id], division: div.id, divId: divIds[div.id]}))).flat();
 
+const restrictedPokemon = new Set([
+    'Mewtwo', 'Lugia', 'Ho-Oh', 'Kyogre', 'Groudon', 'Rayquaza', 'Dialga',
+    'Dialga-Origin', 'Palkia', 'Palkia-Origin', 'Giratina', 'Giratina-Origin',
+    'Reshiram', 'Zekrom', 'Kyurem', 'Kyurem-White', 'Kyurem-Black', 'Xerneas',
+    'Yveltal', 'Zygarde', 'Zygarde-10%', 'Solgaleo', 'Lunala', 'Necrozma',
+    'Necrozma-Dusk-Mane', 'Necrozma-Dawn-Wings', 'Zacian', 'Zacian-Crowned',
+    'Zamazenta', 'Zamazenta-Crowned', 'Eternatus', 'Calyrex', 'Calyrex-Ice',
+    'Calyrex-Shadow', 'Koraidon', 'Miraidon', 'Terapagos', 'Terapagos-Terastal'
+]);
 function summariseTeam(team) {
   let result = '';
+  const sortedTeam = team.toSorted((lhs,rhs) => {
+    const lhsRestricted = restrictedPokemon.has(lhs.species);
+    const rhsRestricted = restrictedPokemon.has(rhs.species);
+    if(lhsRestricted === rhsRestricted) {
+      return 0;
+    }
+    if(lhsRestricted) {
+      return -1;
+    }
+    return 1;
+  })
   for(let i = 0; i < 6; i++) {
-    const species = team[i]?.species ?? 'Unknown';
+    const species = sortedTeam[i]?.species ?? 'Unknown';
     const iconData = Icons.getPokemon(species);
     result += `<span class="pokemon-icon" title="${species}" style="background-position: ${iconData.left}px ${iconData.top}px"></span>`;
   }
