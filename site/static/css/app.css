@@ -225,6 +225,12 @@ tbody .name-cell, .name a {
     grid-template-columns: [all-start] repeat(2, auto) [all-end];
   }
 
+  .top-cut > .top-cut-grid-small {
+    display: grid;
+    grid-column: all;
+    grid-template-columns: subgrid;
+  }
+
   .name, .result {
     display: block;
   }

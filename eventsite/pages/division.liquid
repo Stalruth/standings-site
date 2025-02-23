@@ -94,7 +94,14 @@
           <h3>
             {{ forloop.rindex | cutRound: division.top_cut.totalRounds }}
           </h3>
-          <div {% if round.size > 2 %}class="top-cut-grid"{% endif %}>
+          <div
+              {% if round.size > 2 %}
+                class="top-cut-grid"
+              {% endif %}
+              {%if round.size == 2%}
+                class="top-cut-grid-small"
+              {%endif%}
+          >
             {% for match in round %}
               {% if match.players.size == 2 %}
                 <div class="match">
