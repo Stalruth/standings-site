@@ -77,6 +77,9 @@ function printRecord(player) {
   if (player.rounds[0].rounds[0].id === 0 && player.rounds[0].rounds[0].result === 'L') {
     result += `<abbr title="Late">*</abbr>`;
   }
+  if (!player.rounds.at(-1).rounds.at(-1).result) {
+    result += `<abbr title="Ongoing">^</abbr>`
+  }
   return result
 }
 
