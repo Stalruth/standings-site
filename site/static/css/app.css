@@ -254,12 +254,15 @@ tbody .name-cell, .name a {
   .team a {
     grid-template-columns: repeat(3, min-content);
   }
-
 }
 
 @media (max-width: 35rem) {
   .top-cut {
     grid-template-columns: [all-start] auto [all-end];
+  }
+
+  th.record-resistance {
+    border-top-right-radius: var(--border-radius);
   }
 
   .resistance {
