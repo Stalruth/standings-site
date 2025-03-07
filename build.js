@@ -2,44 +2,15 @@ import Eleventy from '@11ty/eleventy';
 import { Icons } from '@pkmn/img';
 
 const data = process.argv.filter(el=>el.startsWith('--data')).map(el=>el.split('=')).pop()?.[1] ?? './_data';
-const { default: tournament } = await import(`${data}/tournament.json`, { with: { type: 'json' }});
 
-const divisions = [];
-for (let division of ['Juniors', 'Seniors', 'Masters']) {
-  const id = division.toLowerCase();
-  const divData = {
-    'id': id,
-    'name': division,
-  };
-
-  try {
-    divData['standings'] = (await import(`${data}/${id}/standings.json`, { with: { type: 'json' }})).default;
-    } catch (e) {
-      divData['standings'] = [];
-    }
-
-  try {
-    divData['players'] = (await import(`${data}/${id}/players.json`, { with: { type: 'json' }})).default;
-    } catch (e) {
-      divData['players'] = {};
-    }
-
-  try {
-    divData['top_cut'] = (await import(`${data}/${id}/top-cut.json`, { with: { type: 'json' }})).default;
-  } catch(e) {
-    divData['top_cut'] = undefined;
-  }
-
-  divisions.push(divData);
-}
-
-const divIds = {juniors: 0, seniors: 1, masters: 2};
-const players_divisions = divisions.map(div => div.standings.map(id => ({...div.players[id], division: div.id, divId: divIds[div.id]}))).flat();
+const tournament = process.argv.filter(el=>el.startsWith('--tour'))?.map(el=>el.split('='))?.pop()?.[1];
+const year = process.argv.filter(el=>el.startsWith('--year'))?.map(el=>el.split('='))?.pop()?.[1] ?? '2025';
 
 const restrictedPokemon = new Set([
     'Mewtwo', 'Lugia', 'Ho-Oh', 'Kyogre', 'Groudon', 'Rayquaza', 'Dialga',
     'Dialga-Origin', 'Palkia', 'Palkia-Origin', 'Giratina', 'Giratina-Origin',
     'Reshiram', 'Zekrom', 'Kyurem', 'Kyurem-White', 'Kyurem-Black', 'Xerneas',
+
     'Yveltal', 'Zygarde', 'Zygarde-10%', 'Solgaleo', 'Lunala', 'Necrozma',
     'Necrozma-Dusk-Mane', 'Necrozma-Dawn-Wings', 'Zacian', 'Zacian-Crowned',
     'Zamazenta', 'Zamazenta-Crowned', 'Eternatus', 'Calyrex', 'Calyrex-Ice',
@@ -90,14 +61,52 @@ function printRank(rank) {
   return rank;
 }
 
-async function build() {
+async function buildTour() {
+  const { default: tour } = await import(`${data}/${year}/${tournament}/tournament.json`, { with: { type: 'json' }});
+
+  const divisions = [];
+  for (let division of ['Juniors', 'Seniors', 'Masters']) {
+    const id = division.toLowerCase();
+    const divData = {
+      'id': id,
+      'name': division,
+    };
+
+    try {
+      divData['standings'] = (await import(`${data}/${year}/${tournament}/${id}/standings.json`, { with: { type: 'json' }})).default;
+    } catch (e) {
+      divData['standings'] = [];
+    }
+
+    try {
+      divData['players'] = (await import(`${data}/${year}/${tournament}/${id}/players.json`, { with: { type: 'json' }})).default;
+    } catch (e) {
+      divData['players'] = {};
+    }
+
+    try {
+      divData['top_cut'] = (await import(`${data}/${year}/${tournament}/${id}/top-cut.json`, { with: { type: 'json' }})).default;
+    } catch(e) {
+      divData['top_cut'] = undefined;
+    }
+
+    divisions.push(divData);
+  }
+
+  const divIds = {juniors: 0, seniors: 1, masters: 2};
+  const players_divisions = divisions.map(div => div.standings.map(id => ({...div.players[id], division: div.id, divId: divIds[div.id]}))).flat();
+
   const input = process.argv.filter(el=>el.startsWith('--input')).map(el=>el.split('=')).pop()?.[1] ?? 'pages';
   const output = process.argv.filter(el=>el.startsWith('--output')).map(el=>el.split('=')).pop()?.[1] ?? '_site';
 
   let eleventy = new Eleventy(input, output, {
     config: (eleventyConfig) => {
+      eleventyConfig.ignores.add(`${input}/index.json`);
+      eleventyConfig.ignores.add(`${input}/index.liquid`);
+      eleventyConfig.ignores.add(`${input}/year.json`);
+      eleventyConfig.ignores.add(`${input}/year.liquid`);
       eleventyConfig.addGlobalData('layout', 'base.liquid');
-      eleventyConfig.addGlobalData('tournament', tournament);
+      eleventyConfig.addGlobalData('tournament', tour);
       eleventyConfig.addGlobalData('divisions', divisions);
       eleventyConfig.addGlobalData('players_divisions', players_divisions);
       eleventyConfig.addLiquidFilter('percent', num => `${(num * 100).toFixed(2)}%`);
@@ -113,5 +122,36 @@ async function build() {
   await eleventy.write();
 }
 
-await build();
+async function buildBase() {
+  const { default: tours2024 } = await import(`${data}/2024/tournaments.json`, { with: { type: 'json' }});
+  const { default: tours2025 } = await import(`${data}/2025/tournaments.json`, { with: { type: 'json' }});
+
+  const input = process.argv.filter(el=>el.startsWith('--input')).map(el=>el.split('=')).pop()?.[1] ?? 'pages';
+  const output = process.argv.filter(el=>el.startsWith('--output')).map(el=>el.split('=')).pop()?.[1] ?? '_site';
+
+  let eleventy = new Eleventy(input, output, {
+    config: (eleventyConfig) => {
+      eleventyConfig.ignores.add(`${input}/tour.json`);
+      eleventyConfig.ignores.add(`${input}/tour.liquid`);
+      eleventyConfig.ignores.add(`${input}/division.json`);
+      eleventyConfig.ignores.add(`${input}/division.liquid`);
+      eleventyConfig.ignores.add(`${input}/player.json`);
+      eleventyConfig.ignores.add(`${input}/player.liquid`);
+      eleventyConfig.addPassthroughCopy({ 'node_modules/mvp.css/mvp.css' : '/css/mvp.css' });
+      eleventyConfig.addPassthroughCopy({ 'static' : '/' });
+      eleventyConfig.addGlobalData('layout', 'base.liquid');
+      eleventyConfig.addGlobalData('years', [2024, 2025]);
+      eleventyConfig.addGlobalData(2024, {tournaments: tours2024});
+      eleventyConfig.addGlobalData(2025, {tournaments: tours2025});
+    }
+  });
+
+  await eleventy.write();
+}
+
+if(tournament) {
+  await buildTour();
+} else {
+  await buildBase();
+}
 

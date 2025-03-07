@@ -1,19 +1,17 @@
 {
-  "name": "site",
+  "name": "standings-site",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "type": "module",
-  "devDependencies": {
-    "@11ty/eleventy": "^3.0.0-beta.1"
-  },
   "dependencies": {
-    "mvp.css": "^1.15.0"
+    "@11ty/eleventy": "^3.0.0",
+    "@pkmn/img": "^0.2.36",
+    "mvp.css": "^1.17.2"
   }
 }
