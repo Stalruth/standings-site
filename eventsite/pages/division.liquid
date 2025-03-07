@@ -55,18 +55,21 @@
 
   <div id="favourites">
     <h2>Favourites</h2>
-    <table>
+    <table class="standings">
       <thead>
-        <th>Rank</th>
-        <th class="fave">
-          <span class="label-desktop">Favourite</span>
-          <span class="label-mobile">Fave</span>
+        <th class="rank-cell">Rank</th>
+        <th class="fave-cell">
+          <p class="rank">Rank</p>
+          <p class="fave">
+            <span class="label-desktop">Favourite</span>
+            <span class="label-mobile">Fave</span>
+          </p>
         </th>
         <th class="name-cell">Name</th>
         {% if division.players[2].team %}
           <th class="name-team">
             <p class="name">Name</p>
-            <p class="team">Team</p>
+            <p class="team">Team Link</p>
           </th>
         {% else %}
           <th class="cell-mobile">
@@ -126,12 +129,15 @@
 
   <h2>Standings</h2>
 
-  <table>
+  <table class="standings">
     <thead>
-      <th>Rank</th>
-      <th class="fave">
-        <span class="label-desktop">Favourite</span>
-        <span class="label-mobile">Fave</span>
+      <th class="rank-cell">Rank</th>
+      <th class="fave-cell">
+        <p class="rank">Rank</p>
+        <p class="fave">
+          <span class="label-desktop">Favourite</span>
+          <span class="label-mobile">Fave</span>
+        </p>
       </th>
       <th class="name-cell">Name</th>
       {% if division.players[2].team %}
@@ -153,14 +159,23 @@
     <tbody id="standings-body">
       {% for id in division.standings %}
         <tr data-id="{{ id }}" {% if division.players[id].placing == 9999%}class="dq"{% endif %}>
-          <td>
+          <td class="rank-cell">
             {% if division.players[id].placing == 9999 %}
               DQ
             {% else %}
               {{ division.players[id].placing }}
             {% endif %}
           </td>
-          <td class="fave"><button data-id="{{ id }}">☆</button></td>
+          <td class="fave-cell">
+            <p class="rank">
+              {{ division.players[id].placing | printRank }}
+            </p>
+            <p class="fave">
+              <button data-id="{{ id }}">
+                ☆
+              </button>
+            </p>
+          </td>
           <td class="name-cell">
             <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
               {{ division.players[id].name }}

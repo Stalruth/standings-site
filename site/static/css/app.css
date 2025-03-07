@@ -1,33 +1,13 @@
-:root {
-  --warning-bg: #ffb;
-  --warning-border: #bb0;
+td.fave-cell {
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --warning-bg: #442;
-    --warning-border: #ff0;
-  }
-}
-
-.warning {
-  border: 1px solid;
-  border-radius: var(--border-radius);
-  padding: 0.75rem;
-  background-color: var(--warning-bg);
-  border-color: var(--warning-border);
-}
-
-.warning p:first-child {
-  margin-top: 0;
-}
-
-.warning p:last-child {
-  margin-bottom: 0;
+.fave-cell .rank {
+  display: none;
 }
 
 .fave {
-  padding: 0;
+  margin: 0;
 }
 
 .fave button, button.fave {
@@ -178,7 +158,6 @@ tbody .name-cell, .name a {
 }
 
 .name {
-  margin-bottom: 0.5rem;
   overflow-wrap: anywhere;
 }
 
@@ -235,6 +214,14 @@ tbody .name-cell, .name a {
     display: block;
   }
 
+  th .name {
+    margin: 0 0 0.5rem 0;
+  }
+
+  td .name, td .team {
+    padding: 0.25rem 0rem;
+  }
+
   .name-cell, .result-cell {
     display: none;
   }
@@ -250,15 +237,31 @@ tbody .name-cell, .name a {
   th p.round {
     margin-bottom: 0.5rem;
   }
+}
+
+@media (max-width: 38.5rem) {
+  .top-cut {
+    grid-template-columns: [all-start] auto [all-end];
+  }
+
+  .rank-cell {
+    display: none;
+  }
+
+  th.fave-cell {
+    border-top-left-radius: var(--border-radius);
+  }
+
+  .fave-cell .rank {
+    display: block;
+  }
+
+  td.fave-cell .rank {
+    margin: 0.25rem 0;
+  }
 
   .team a {
     grid-template-columns: repeat(3, min-content);
-  }
-}
-
-@media (max-width: 35rem) {
-  .top-cut {
-    grid-template-columns: [all-start] auto [all-end];
   }
 
   th.record-resistance {

@@ -14,10 +14,10 @@ function updateFavouriteButton(button) {
   button.innerText = isFav ? '★' : '☆';
   if(isFav) {
     button.classList.add('faved');
-    button.parentElement.parentElement.setAttribute('data-fav', '');
+    button.parentElement.parentElement.parentElement.setAttribute('data-fav', '');
   } else {
     button.classList.remove('faved');
-    button.parentElement.parentElement.removeAttribute('data-fav');
+    button.parentElement.parentElement.parentElement.removeAttribute('data-fav');
   }
 }
 

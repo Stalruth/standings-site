@@ -83,6 +83,13 @@ function printRecord(player) {
   return result
 }
 
+function printRank(rank) {
+  if(rank === 9999) {
+    return 'DQ';
+  }
+  return rank;
+}
+
 async function build() {
   const input = process.argv.filter(el=>el.startsWith('--input')).map(el=>el.split('=')).pop()?.[1] ?? 'pages';
   const output = process.argv.filter(el=>el.startsWith('--output')).map(el=>el.split('=')).pop()?.[1] ?? '_site';
@@ -96,6 +103,7 @@ async function build() {
       eleventyConfig.addLiquidFilter('percent', num => `${(num * 100).toFixed(2)}%`);
       eleventyConfig.addLiquidFilter('summariseTeam', summariseTeam);
       eleventyConfig.addLiquidFilter('printRecord', printRecord);
+      eleventyConfig.addLiquidFilter('printRank', printRank);
       eleventyConfig.addLiquidFilter('cutRound', (round, totalRounds) => round === totalRounds ? 'Finals' : `Top ${2 ** (totalRounds - round + 1)}`);
       eleventyConfig.addLiquidFilter('roundsPlayed', (rounds) => rounds.reduce((acc, cur) => acc + cur.rounds.length, 0))
       eleventyConfig.addLiquidFilter('resultName', (result) => ({'L': 'Loss', 'W': 'Win', 'T': 'Tie'}[result] ?? 'Ongoing'));
