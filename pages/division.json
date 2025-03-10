@@ -5,6 +5,9 @@
     "alias": "division"
   },
   "permalink": "{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/",
+  "stylesheets": [
+    "/css/division.css"
+  ],
   "eleventyComputed": {
     "title": "{{ division.name }}: {{ tournament.name }} - VGC Homemade Standings",
     "description": "Homemade Standings for the {{ tournament.name }}: {{ division.name }} Division."

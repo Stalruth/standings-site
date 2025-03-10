@@ -7,6 +7,9 @@
     <link href="/css/mvp.css" rel="stylesheet">
     <link href="/css/stalruth.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
+    {% for style in stylesheets %}
+    <link href="{{ style }}" rel="stylesheet">
+    {% endfor %}
     <title>{{ title }}</title>
     <meta property="og:title" content="{{ title }}">
     <meta property="og:url" content="{{ permalink }}">
