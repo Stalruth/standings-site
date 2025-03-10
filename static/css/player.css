@@ -122,20 +122,10 @@ tbody .name-cell, .name a {
 }
 
 @media (max-width: 38.5rem) {
-  th.fave-cell {
-    border-top-left-radius: var(--border-radius);
-  }
-
   .team a {
     grid-template-columns: repeat(3, min-content);
-  }
-
-  .record {
-    margin: 0.75rem 0rem;
-  }
-
-  th p.record {
-    margin-bottom: 0.5rem;
+    grid-template-rows: repeat(2, min-content);
+    grid-auto-flow: column;
   }
 }
 

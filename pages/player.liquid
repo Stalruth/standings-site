@@ -105,7 +105,11 @@
             <td class="result-cell">
               {{ round.result | resultName }}
             </td>
-            <td class="fave"><button data-id="{{ round.id }}">☆</button></td>
+            <td class="fave">
+              {% if round.id != 0 %}
+                <button data-id="{{ round.id }}">☆</button>
+              {% endif %}
+            </td>
             <td class="name-cell">
               {% if round.id != 0 %}
                 <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
