@@ -1,3 +1,31 @@
+:root {
+  --warning-bg: #ffb;
+  --warning-border: #bb0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --warning-bg: #442;
+    --warning-border: #ff0;
+  }
+}
+
+.warning {
+  border: 1px solid;
+  border-radius: var(--border-radius);
+  padding: 0.75rem;
+  background-color: var(--warning-bg);
+  border-color: var(--warning-border);
+}
+
+.warning p:first-child {
+  margin-top: 0;
+}
+
+.warning p:last-child {
+  margin-bottom: 0;
+}
+
 header {
   padding: 0rem 1rem;
   text-align: left;
@@ -13,5 +41,49 @@ nav ul :first-child {
 
 main {
   padding-top: 0;
+}
+
+.team a {
+  display: grid;
+  grid-template-columns: repeat(6, min-content);
+  justify-content: center;
+}
+
+.pokemon-icon {
+  display: inline-block;
+  width: 40px;
+  height: 30px;
+  image-rendering: pixelated;
+  background: transparent url('/sprites/pokemonicons-sheet.png') no-repeat scroll;
+}
+
+.label-mobile, .cell-mobile {
+  display: none;
+}
+
+.label-desktop {
+  display: initial;
+}
+
+@media (max-width: 52.5rem) {
+  .label-mobile {
+    display: initial;
+  }
+
+  .cell-mobile {
+    display: table-cell;
+  }
+
+  .label-desktop {
+    display: none;
+  }
+}
+
+@media (max-width: 38.5rem) {
+  .team a {
+    grid-template-columns: repeat(3, min-content);
+    grid-template-rows: repeat(2, min-content);
+    grid-auto-flow: column;
+  }
 }
 
