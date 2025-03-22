@@ -56,6 +56,7 @@ main {
   image-rendering: pixelated;
   background: transparent url('/sprites/pokemonicons-sheet.png') no-repeat scroll;
   vertical-align: bottom;
+  margin: -1px;
 }
 
 .label-mobile, .cell-mobile {
