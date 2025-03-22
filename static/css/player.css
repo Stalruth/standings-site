@@ -1,3 +1,15 @@
+th p {
+  margin: 0;
+}
+
+th .team {
+  margin: 0;
+}
+
+td .round {
+  margin: 0;
+}
+
 td.fave-cell {
   padding: 0;
 }
@@ -21,22 +33,6 @@ button.fave {
 
 button.faved {
   color: #d06f00;
-}
-
-th p {
-  margin: 0.5rem 0;
-}
-
-th p:first-child {
-  margin-top: 0rem;
-}
-
-th p:last-child {
-  margin-bottom: 0rem;
-}
-
-th .team {
-  margin: 0;
 }
 
 tbody .name-cell, .name a {
