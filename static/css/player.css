@@ -40,12 +40,8 @@ td .round {
   margin: 0;
 }
 
-td.fave-cell {
+td.fave {
   padding: 0;
-}
-
-.fave {
-  margin: 0;
 }
 
 .fave button, button.fave {
