@@ -45,9 +45,26 @@
   {% if player.team %}
     <h3>Team</h3>
 
+    <details>
+      <summary>
+        Teamlist <span class="preview">{{ player.team | summariseTeam }}</span>
+      </summary>
+      <div class="teamlist">
+        {% for pokemonSet in player.team %}
+          <div class="set">
+            <div>
+              {{ pokemonSet | pokemonIcon }}
+            </div>
+            <div>
+              {{ pokemonSet | printSet }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </details>
     <p>
       <a href="{{ player.paste }}">
-        {{ player.team | summariseTeam }}
+        Teamlist link (pokepast.es)
       </a>
     </p>
   {% endif %}

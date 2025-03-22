@@ -1,3 +1,33 @@
+details[open] .preview {
+  display: none;
+}
+
+.teamlist {
+  margin: 1rem 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.set {
+  display: flex;
+}
+
+@media (width > 38.5rem) {
+  .teamlist {
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: row;
+  }
+}
+
+@media (width > 52.5rem) {
+  .teamlist {
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+  }
+}
+
 th p {
   margin: 0;
 }

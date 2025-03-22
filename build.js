@@ -6,35 +6,24 @@ const data = process.argv.filter(el=>el.startsWith('--data')).map(el=>el.split('
 const tournament = process.argv.filter(el=>el.startsWith('--tour'))?.map(el=>el.split('='))?.pop()?.[1];
 const year = process.argv.filter(el=>el.startsWith('--year'))?.map(el=>el.split('='))?.pop()?.[1] ?? '2025';
 
-const restrictedPokemon = new Set([
-    'Mewtwo', 'Lugia', 'Ho-Oh', 'Kyogre', 'Groudon', 'Rayquaza', 'Dialga',
-    'Dialga-Origin', 'Palkia', 'Palkia-Origin', 'Giratina', 'Giratina-Origin',
-    'Reshiram', 'Zekrom', 'Kyurem', 'Kyurem-White', 'Kyurem-Black', 'Xerneas',
+function pokemonIcon(pokemonSet) {
+    const species = pokemonSet?.species ?? 'Unknown';
+    const iconData = Icons.getPokemon(species);
+    return `<span class="pokemon-icon" title="${species}" style="background-position: ${iconData.left}px ${iconData.top}px"></span>`;
+}
 
-    'Yveltal', 'Zygarde', 'Zygarde-10%', 'Solgaleo', 'Lunala', 'Necrozma',
-    'Necrozma-Dusk-Mane', 'Necrozma-Dawn-Wings', 'Zacian', 'Zacian-Crowned',
-    'Zamazenta', 'Zamazenta-Crowned', 'Eternatus', 'Calyrex', 'Calyrex-Ice',
-    'Calyrex-Shadow', 'Koraidon', 'Miraidon', 'Terapagos', 'Terapagos-Terastal'
-]);
 function summariseTeam(team) {
   let result = '';
-  const sortedTeam = team.toSorted((lhs,rhs) => {
-    const lhsRestricted = restrictedPokemon.has(lhs.species);
-    const rhsRestricted = restrictedPokemon.has(rhs.species);
-    if(lhsRestricted === rhsRestricted) {
-      return 0;
-    }
-    if(lhsRestricted) {
-      return -1;
-    }
-    return 1;
-  })
   for(let i = 0; i < 6; i++) {
-    const species = sortedTeam[i]?.species ?? 'Unknown';
-    const iconData = Icons.getPokemon(species);
-    result += `<span class="pokemon-icon" title="${species}" style="background-position: ${iconData.left}px ${iconData.top}px"></span>`;
+    result += pokemonIcon(team[i]);
   }
   return result;
+}
+
+function printSet(pokemonSet) {
+  const item = pokemonSet.item ? ` @ ${pokemonSet.item}` : '';
+  const moves = pokemonSet.moves.map(el => `- ${el}`).join('<br>');
+  return `${pokemonSet.species}${item}<br>Ability: ${pokemonSet.ability}<br>Tera Type: ${pokemonSet.teraType}<br>${moves}`;
 }
 
 function printRecord(player) {
@@ -96,6 +85,32 @@ async function buildTour() {
   const divIds = {juniors: 0, seniors: 1, masters: 2};
   const players_divisions = divisions.map(div => div.standings.map(id => ({...div.players[id], division: div.id, divId: divIds[div.id]}))).flat();
 
+  for(let item of players_divisions) {
+    const restrictedPokemon = new Set([
+      'Mewtwo', 'Lugia', 'Ho-Oh', 'Kyogre', 'Groudon', 'Rayquaza', 'Dialga',
+      'Dialga-Origin', 'Palkia', 'Palkia-Origin', 'Giratina', 'Giratina-Origin',
+      'Reshiram', 'Zekrom', 'Kyurem', 'Kyurem-White', 'Kyurem-Black', 'Xerneas',
+      'Yveltal', 'Zygarde', 'Zygarde-10%', 'Solgaleo', 'Lunala', 'Necrozma',
+      'Necrozma-Dusk-Mane', 'Necrozma-Dawn-Wings', 'Zacian', 'Zacian-Crowned',
+      'Zamazenta', 'Zamazenta-Crowned', 'Eternatus', 'Calyrex', 'Calyrex-Ice',
+      'Calyrex-Shadow', 'Koraidon', 'Miraidon', 'Terapagos', 'Terapagos-Terastal'
+    ]);
+
+    if(item.team) {
+      item.team.sort((lhs,rhs) => {
+        const lhsRestricted = restrictedPokemon.has(lhs.species);
+        const rhsRestricted = restrictedPokemon.has(rhs.species);
+        if(lhsRestricted === rhsRestricted) {
+          return 0;
+        }
+        if(lhsRestricted) {
+          return -1;
+        }
+        return 1;
+      });
+    }
+  }
+
   const input = process.argv.filter(el=>el.startsWith('--input')).map(el=>el.split('=')).pop()?.[1] ?? 'pages';
   const output = process.argv.filter(el=>el.startsWith('--output')).map(el=>el.split('=')).pop()?.[1] ?? '_site';
 
@@ -110,7 +125,9 @@ async function buildTour() {
       eleventyConfig.addGlobalData('divisions', divisions);
       eleventyConfig.addGlobalData('players_divisions', players_divisions);
       eleventyConfig.addLiquidFilter('percent', num => `${(num * 100).toFixed(2)}%`);
+      eleventyConfig.addLiquidFilter('pokemonIcon', pokemonIcon);
       eleventyConfig.addLiquidFilter('summariseTeam', summariseTeam);
+      eleventyConfig.addLiquidFilter('printSet', printSet);
       eleventyConfig.addLiquidFilter('printRecord', printRecord);
       eleventyConfig.addLiquidFilter('printRank', printRank);
       eleventyConfig.addLiquidFilter('cutRound', (round, totalRounds) => round === totalRounds ? 'Finals' : `Top ${2 ** (totalRounds - round + 1)}`);
