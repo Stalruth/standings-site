@@ -22,8 +22,11 @@ function summariseTeam(team) {
 
 function printSet(pokemonSet) {
   const item = pokemonSet.item ? ` @ ${pokemonSet.item}` : '';
-  const moves = pokemonSet.moves.map(el => `- ${el}`).join('<br>');
-  return `${pokemonSet.species}${item}<br>Ability: ${pokemonSet.ability}<br>Tera Type: ${pokemonSet.teraType}<br>${moves}`;
+  const ability = pokemonSet.ability ? `<br>Ability: ${pokemonSet.ability}` : '';
+  const tera = pokemonSet.teraType ? `<br>Tera Type: ${pokemonSet.teraType}` : '';
+  const moves = pokemonSet.moves ?? [];
+  const movesString = moves.length > 0 ? '<br>' + moves.map(el => `- ${el}`).join('<br>') : '';
+  return `${pokemonSet.species}${item}${ability}${tera}${movesString}`;
 }
 
 function printRecord(player) {
