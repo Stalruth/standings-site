@@ -158,9 +158,9 @@
     </thead>
     <tbody id="standings-body">
       {% for id in division.standings %}
-        <tr data-id="{{ id }}" {% if division.players[id].placing == 9999%}class="dq"{% endif %}>
+        <tr data-id="{{ id }}" {% if division.players[id].placing == null %}class="dq"{% endif %}>
           <td class="rank-cell">
-            {% if division.players[id].placing == 9999 %}
+            {% if division.players[id].placing == null %}
               DQ
             {% else %}
               {{ division.players[id].placing }}
