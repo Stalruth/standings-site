@@ -83,7 +83,7 @@ def print_set(pokemon_set):
 
 @app.template_filter('printRecord')
 def print_record(player):
-    if player is None:
+    if 'record' not in player:
         return '-'
     wins = player['record']['wins']
     losses = player['record']['losses']
@@ -131,6 +131,13 @@ def result_name(value):
 @app.template_filter('date')
 def print_date(value):
     return datetime.fromisoformat(value).strftime("%Y-%m-%d %H:%M")
+
+
+@app.template_filter('playerById')
+def player_by_id(pid, players):
+    if f"{pid}" in players:
+        return players[f"{pid}"]
+    return {}
 
 
 @app.route('/')

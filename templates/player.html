@@ -111,7 +111,7 @@
           <td colspan="7">Dropped at Round {{ player.drop }}</td>
         {% endif %}
         {% for round in roundset.rounds | reverse %}
-          {% set opp_id = round.id | string %}
+          {% set opp = round.id | playerById(players) %}
           <tr>
             <td class="round-result">
               <p class="round">
@@ -137,7 +137,7 @@
             <td class="name-cell">
               {% if round.id != 0 %}
                 <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
-                  {{ players[opp_id].name }}
+                  {{ opp.name }}
                 </a>
               {% else %}
                 {% if round.result == 'L' %}
@@ -152,7 +152,7 @@
                 <div class="name">
                   {% if round.id != 0 %}
                     <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
-                      {{ players[opp_id].name }}
+                      {{ opp.name }}
                     </a>
                   {% else %}
                     {% if round.result == 'L' %}
@@ -162,10 +162,10 @@
                     {% endif %}
                   {% endif %}
                 </div>
-                {% if players[opp_id].team %}
+                {% if opp.team %}
                   <div class="team">
-                    <a href="{{ players[opp_id].paste }}">
-                      {{ players[opp_id].team | sortTeam | summariseTeam }}
+                    <a href="{{ opp.paste }}">
+                      {{ opp.team | sortTeam | summariseTeam }}
                     </a>
                   </div>
                 {% endif %}
@@ -175,7 +175,7 @@
                 <div class="name">
                   {% if round.id != 0 %}
                     <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
-                      {{ players[opp_id].name }}
+                      {{ opp.name }}
                     </a>
                   {% else %}
                     {% if round.result == 'L' %}
@@ -188,7 +188,7 @@
               </td>
             {% endif %}
             <td>
-              {{ players[opp_id] | printRecord }}
+              {{ opp | printRecord }}
             </td>
           </tr>
         {% endfor %}
