@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 import math
+import os
 import re
 
 from flask import abort, Flask, render_template
@@ -13,6 +14,8 @@ app = Flask(__name__, static_url_path='')
 
 with open('icondata.json', 'r') as infile:
     icon_data = json.load(infile)
+
+DATA = os.getenv('STANDINGS_DATA', 'data')
 
 
 @app.template_filter('percent')
@@ -126,9 +129,6 @@ def result_name(value):
 @app.template_filter('date')
 def print_date(value):
     return datetime.fromisoformat(value).strftime("%Y-%m-%d %H:%M")
-
-
-DATA = 'data'
 
 
 @app.route('/')
