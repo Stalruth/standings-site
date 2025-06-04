@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<header>
+  <nav>
+    <p>
+      <a href="/">Index</a>
+      &nbsp;/&nbsp;
+      Error
+    </p>
+  </nav>
+</header>
+<main>
+  <h1>{{ error.code }}: {{ error.name }}</h1>
+
+  <p>Something went wrong! Probably something like this:</p>
+
+  <p>{{ error.description }}</p>
+
+  <p>That probably doesn't help you much though - maybe get in touch with the developer (Stuart Rutherford) on <a href="https://x.com/Stalruth">X</a> or <a href="https://bsky.app/profile/stalruth.dev">Blue Sky</a> if you think he should know. Bug reports are always appreciated!</p>
+
+  <p>Thank you for using the Homemade Standings website. You can use the link at the top of this page to return to the Index page - as long as that's working!</p>
+</main>
+{% endblock content %}
+

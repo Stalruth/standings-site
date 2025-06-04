@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+{% block head %}
+<link href="/css/player.css" rel="stylesheet">
+{% endblock head %}
+{% block content %}
 <header>
   <nav>
     <p>
@@ -7,7 +12,7 @@
       &nbsp;/&nbsp;
       <a href="/{{ tournament.season }}/{{ tournament.id }}">{{ tournament.name }}</a>
       &nbsp;/&nbsp;
-      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}">{{ player.division | capitalize }}</a>
+      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}">{{ division.name }}</a>
       &nbsp;/&nbsp;
       {{ player.name }}
     </p>
@@ -25,7 +30,7 @@
       Final placing:
       {% if player.top == 1 %}
         1st
-      {% elsif player.top == 2 %}
+      {% elif player.top == 2 %}
         2nd
       {% else %}
         Top {{ player.top }}
@@ -47,10 +52,10 @@
 
     <details>
       <summary>
-        Teamlist <span class="preview">{{ player.team | summariseTeam }}</span>
+        Teamlist <span class="preview">{{ player.team | sortTeam | summariseTeam }}</span>
       </summary>
       <div class="teamlist">
-        {% for pokemonSet in player.team %}
+        {% for pokemonSet in player.team | sortTeam %}
           <div class="set">
             <div>
               {{ pokemonSet | pokemonIcon }}
@@ -71,8 +76,9 @@
 
   <h3>Schedule</h3>
 
-  {% assign round_counter = player.rounds | roundsPlayed %}
-  {% for roundset in player.rounds reversed %}
+  {% set ns = namespace() %}
+  {% set ns.round_counter = player.rounds | roundsPlayed %}
+  {% for roundset in player.rounds | reverse %}
     <table>
       <caption>
         {{ roundset.name }}
@@ -101,24 +107,25 @@
         <th>Record</th>
       </thead>
       <tbody>
-        {% if forloop.first and player.drop != -1 %}
+        {% if loop.first and player.drop != -1 %}
           <td colspan="7">Dropped at Round {{ player.drop }}</td>
         {% endif %}
-        {% for round in roundset.rounds reversed %}
+        {% for round in roundset.rounds | reverse %}
+          {% set opp_id = round.id | string %}
           <tr>
             <td class="round-result">
               <p class="round">
                 {% if roundset.name == 'Top Cut' %}
-                  {{ forloop.rindex | cutRound: tournament.tournamentStructure[player.division].topCut }}
+                  {{ loop.revindex | cutRound(tournament.tournamentStructure[division.id].topCut) }}
                 {% else %}
-                  {{ round_counter }}
+                  {{ ns.round_counter }}
                 {% endif %}
               </p>
               <p class="result">
                 {{ round.result | resultName }}
               </p>
             </td>
-            {% assign round_counter = round_counter | minus: 1 %}
+            {% set ns.round_counter = ns.round_counter - 1 %}
             <td class="result-cell">
               {{ round.result | resultName }}
             </td>
@@ -129,13 +136,13 @@
             </td>
             <td class="name-cell">
               {% if round.id != 0 %}
-                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
-                  {{ divisions[player.divId].players[round.id].name }}
+                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
+                  {{ players[opp_id].name }}
                 </a>
               {% else %}
                 {% if round.result == 'L' %}
                   <b>LATE</b>
-                {% elsif round.result == 'W' %}
+                {% elif round.result == 'W' %}
                   <b>BYE</b>
                 {% endif %}
               {% endif %}
@@ -144,21 +151,21 @@
               <td class="name-team">
                 <div class="name">
                   {% if round.id != 0 %}
-                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
-                      {{ divisions[player.divId].players[round.id].name }}
+                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
+                      {{ players[opp_id].name }}
                     </a>
                   {% else %}
                     {% if round.result == 'L' %}
                       <b>LATE</b>
-                    {% elsif round.result == 'W' %}
+                    {% elif round.result == 'W' %}
                       <b>BYE</b>
                     {% endif %}
                   {% endif %}
                 </div>
-                {% if divisions[player.divId].players[round.id].team %}
+                {% if players[opp_id].team %}
                   <div class="team">
-                    <a href="{{ divisions[player.divId].players[round.id].paste }}">
-                      {{ divisions[player.divId].players[round.id].team | summariseTeam: true }}
+                    <a href="{{ players[opp_id].paste }}">
+                      {{ players[opp_id].team | sortTeam | summariseTeam }}
                     </a>
                   </div>
                 {% endif %}
@@ -167,13 +174,13 @@
               <td class="cell-mobile">
                 <div class="name">
                   {% if round.id != 0 %}
-                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ player.division }}/{{ round.id }}">
-                      {{ divisions[player.divId].players[round.id].name }}
+                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
+                      {{ players[opp_id].name }}
                     </a>
                   {% else %}
                     {% if round.result == 'L' %}
                       <b>LATE</b>
-                    {% elsif round.result == 'W' %}
+                    {% elif round.result == 'W' %}
                       <b>BYE</b>
                     {% endif %}
                   {% endif %}
@@ -181,7 +188,7 @@
               </td>
             {% endif %}
             <td>
-              {{ divisions[player.divId].players[round.id] | printRecord }}
+              {{ players[opp_id] | printRecord }}
             </td>
           </tr>
         {% endfor %}
@@ -200,4 +207,5 @@
     button.addEventListener('click', getFavouriteHandler(storeName));
   });
 </script>
+{% endblock content %}
 

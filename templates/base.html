@@ -7,16 +7,14 @@
     <link href="/css/mvp.css" rel="stylesheet">
     <link href="/css/stalruth.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
-    {% for style in stylesheets %}
-    <link href="{{ style }}" rel="stylesheet">
-    {% endfor %}
     <title>{{ title }}</title>
     <meta property="og:title" content="{{ title }}">
     <meta property="og:url" content="{{ permalink }}">
     <meta property="og:description" content="{{ description }}">
+    {% block head %}{% endblock head %}
   </head>
   <body>
-    {{ content }}
+    {% block content %}{% endblock content %}
     <footer>
       <details>
         <summary>Credits</summary>

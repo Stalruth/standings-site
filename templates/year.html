@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <header>
   <nav>
     <p>
@@ -10,7 +12,7 @@
 <main>
   <h1>VGC {{ year }} Standings</h1>
 
-  {% for tournament in [year].tournaments reversed %}
+  {% for tournament in tournaments | reverse %}
     <article>
       {{ tournament.name }}
       <ul>
@@ -32,3 +34,5 @@
     </article>
   {% endfor %}
 </main>
+{% endblock content %}
+
