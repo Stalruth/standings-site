@@ -123,7 +123,9 @@ def result_name(value):
             'W': 'Win',
             'T': 'Tie'
     }
-    return results[value]
+    if value in results:
+        return results[value]
+    return 'Ongoing'
 
 
 @app.template_filter('date')
