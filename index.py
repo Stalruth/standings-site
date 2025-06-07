@@ -32,7 +32,12 @@ def pokemon_icon(pokemon_set):
 
     p = re.compile('[^a-z0-9]')
     species_id = p.sub('', species.lower())
-    icon_info = icon_data['pokemon'][species_id]
+
+    if species_id in icon_data['pokemon']:
+        icon_info = icon_data['pokemon'][species_id]
+    else:
+        icon_info = {'n': 0}
+
     num = icon_info['n']
     if num < 0 or num > 1025:
         num = 0
