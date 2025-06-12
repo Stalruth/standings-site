@@ -71,7 +71,7 @@
           </p>
         </th>
         <th class="name-cell">Name</th>
-        {% if division.players['2'].team %}
+        {% if 'team' in division.players.get('2', {}) %}
           <th class="name-team">
             <p class="name">Name</p>
             <p class="team">Team Link</p>
@@ -146,7 +146,7 @@
         </p>
       </th>
       <th class="name-cell">Name</th>
-      {% if division.players['2'].team %}
+      {% if 'team' in division.players.get('2', {}) %}
         <th class="name-team">
           <p class="name">Name</p>
           <p class="team">Team Link</p>

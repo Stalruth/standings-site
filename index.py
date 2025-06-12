@@ -210,14 +210,20 @@ def division(year, tid, divid):
                 'id': divid,
                 'name': divid.capitalize()
         }
+    except FileNotFoundError:
+        raise NotFound
 
+    try:
         with open(f"{div_base}/players.json") as infile:
             division['players'] = json.load(infile)
+    except FileNotFoundError:
+        division['players'] = {}
 
+    try:
         with open(f"{div_base}/standings.json") as infile:
             division['standings'] = json.load(infile)
     except FileNotFoundError:
-        raise NotFound
+        division['standings'] = []
 
     try:
         with open(f"{div_base}/top-cut.json") as infile:
