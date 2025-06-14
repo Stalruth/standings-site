@@ -201,7 +201,7 @@
 <script type="module">
   import { createFavsTable, getFavouriteHandler, updateFavouriteButtons } from '/js/favourites.js';
 
-  const storeName = 'favourites-{{ tournament.season }}-{{ tournament.id }}-{{ player.division }}';
+  const storeName = 'favourites-{{ tournament.season }}-{{ tournament.id }}-{{ division.id }}';
   updateFavouriteButtons(storeName);
   document.querySelectorAll('button[data-id]').forEach((button) => {
     button.addEventListener('click', getFavouriteHandler(storeName));
