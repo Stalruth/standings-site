@@ -115,7 +115,7 @@
                 <div class="match">
                   {% for player in match.players %}
                     {% set player_id = player.id | string %}
-                    <div class="{% if match.winner != loop.index0 and match.winner != null %}loser{% endif %}">
+                    <div class="{% if match.winner != loop.index0 and match.winner != None %}loser{% endif %}">
                       <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ player.id }}">
                         {{ division.players[player_id].name }}
                       </a>
