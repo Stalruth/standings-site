@@ -165,9 +165,9 @@
     <tbody id="standings-body">
       {% for pid in division.standings %}
         {% set id = pid | string %}
-        <tr data-id="{{ id }}" {% if division.players[id].placing == null %}class="dq"{% endif %}>
+        <tr data-id="{{ id }}" {% if division.players[id].placing == None %}class="dq"{% endif %}>
           <td class="rank-cell">
-            {% if division.players[id].placing == null %}
+            {% if division.players[id].placing == None %}
               DQ
             {% else %}
               {{ division.players[id].placing }}
