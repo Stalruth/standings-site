@@ -28,7 +28,7 @@
     <tbody>
       {% for division in divisions %}
         <tr>
-          <td><a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}">{{ division.name }}</td>
+          <td><a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/">{{ division.name }}</td>
           <td>{{ tournament.players[division.id] }}</td>
           <td>{{ tournament.winners[division.id] }}</td>
         </tr>

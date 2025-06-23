@@ -10,7 +10,7 @@
       &nbsp;/&nbsp;
       <a href="/{{ tournament.season }}/">{{ tournament.season }}</a>
       &nbsp;/&nbsp;
-      <a href="/{{ tournament.season }}/{{ tournament.id }}">{{ tournament.name }}</a>
+      <a href="/{{ tournament.season }}/{{ tournament.id }}/">{{ tournament.name }}</a>
       &nbsp;/&nbsp;
       {{ division.name }}
     </p>
@@ -116,7 +116,7 @@
                   {% for player in match.players %}
                     {% set player_id = player.id | string %}
                     <div class="{% if match.winner != loop.index0 and match.winner != None %}loser{% endif %}">
-                      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ player.id }}">
+                      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ player.id }}/">
                         {{ division.players[player_id].name }}
                       </a>
                     </div>
@@ -184,14 +184,14 @@
             </p>
           </td>
           <td class="name-cell">
-            <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
+            <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}/">
               {{ division.players[id].name }}
             </a>
           </td>
           {% if division.players[id].team %}
             <td class="name-team">
               <div class="name">
-                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
+                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}/">
                   {{ division.players[id].name }}
                 </a>
               </div>
@@ -204,7 +204,7 @@
           {% else %}
             <td class="cell-mobile">
               <div class="name">
-                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}">
+                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}/">
                   {{ division.players[id].name }}
                 </a>
               </div>

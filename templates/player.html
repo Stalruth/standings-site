@@ -10,9 +10,9 @@
       &nbsp;/&nbsp;
       <a href="/{{ tournament.season }}/">{{ tournament.season }}</a>
       &nbsp;/&nbsp;
-      <a href="/{{ tournament.season }}/{{ tournament.id }}">{{ tournament.name }}</a>
+      <a href="/{{ tournament.season }}/{{ tournament.id }}/">{{ tournament.name }}</a>
       &nbsp;/&nbsp;
-      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}">{{ division.name }}</a>
+      <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/">{{ division.name }}</a>
       &nbsp;/&nbsp;
       {{ player.name }}
     </p>
@@ -136,7 +136,7 @@
             </td>
             <td class="name-cell">
               {% if round.id != 0 %}
-                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
+                <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}/">
                   {{ opp.name }}
                 </a>
               {% else %}
@@ -151,7 +151,7 @@
               <td class="name-team">
                 <div class="name">
                   {% if round.id != 0 %}
-                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
+                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}/">
                       {{ opp.name }}
                     </a>
                   {% else %}
@@ -174,7 +174,7 @@
               <td class="cell-mobile">
                 <div class="name">
                   {% if round.id != 0 %}
-                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}">
+                    <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ round.id }}/">
                       {{ opp.name }}
                     </a>
                   {% else %}
