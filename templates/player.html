@@ -19,9 +19,10 @@
   </nav>
 </header>
 <main>
+  {% set pid = player.id | string %}
   <h1>{{ tournament.name }}</h1>
 
-  <h2><button class="fave" data-id="{{ player.id }}">☆</button> {{ player.name }}</h2>
+  <h2><button class="fave" data-id="{{ pid }}">☆</button> {{ player.name }}</h2>
 
   <h3>Record</h3>
 
@@ -47,15 +48,15 @@
     </span>
   </p>
 
-  {% if player.team %}
+  {% if teams != None and teams[pid | string] %}
     <h3>Team</h3>
 
     <details>
       <summary>
-        Teamlist <span class="preview">{{ player.team | sortTeam | summariseTeam }}</span>
+        Teamlist <span class="preview">{{ teams[pid].team | sortTeam | summariseTeam }}</span>
       </summary>
       <div class="teamlist">
-        {% for pokemonSet in player.team | sortTeam %}
+        {% for pokemonSet in teams[pid].team | sortTeam %}
           <div class="set">
             <div>
               {{ pokemonSet | pokemonIcon }}
@@ -68,7 +69,7 @@
       </div>
     </details>
     <p>
-      <a href="{{ player.paste }}">
+      <a href="{{ teams[pid].paste }}">
         Teamlist link (pokepast.es)
       </a>
     </p>
@@ -94,7 +95,7 @@
           <span class="label-mobile">Fave</span>
         </th>
         <th class="name-cell">Name</th>
-        {% if player.team %}
+        {% if teams != None %}
           <th class="name-team">
             <p class="name">Name</p>
             <p class="team">Team Link</p>
@@ -112,6 +113,7 @@
         {% endif %}
         {% for round in roundset.rounds | reverse %}
           {% set opp = round.id | playerById(players) %}
+          {% set oppid = round.id | string %}
           <tr>
             <td class="round-result">
               <p class="round">
@@ -147,7 +149,7 @@
                 {% endif %}
               {% endif %}
             </td>
-            {% if player.team %}
+            {% if teams != None %}
               <td class="name-team">
                 <div class="name">
                   {% if round.id != 0 %}
@@ -162,10 +164,10 @@
                     {% endif %}
                   {% endif %}
                 </div>
-                {% if opp.team %}
+                {% if teams[oppid] %}
                   <div class="team">
-                    <a href="{{ opp.paste }}">
-                      {{ opp.team | sortTeam | summariseTeam }}
+                    <a href="{{ teams[oppid].paste }}">
+                      {{ teams[oppid].team | sortTeam | summariseTeam }}
                     </a>
                   </div>
                 {% endif %}

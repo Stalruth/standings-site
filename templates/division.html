@@ -71,7 +71,7 @@
           </p>
         </th>
         <th class="name-cell">Name</th>
-        {% if 'team' in division.players.get('2', {}) %}
+        {% if teams != None %}
           <th class="name-team">
             <p class="name">Name</p>
             <p class="team">Team Link</p>
@@ -146,7 +146,7 @@
         </p>
       </th>
       <th class="name-cell">Name</th>
-      {% if 'team' in division.players.get('2', {}) %}
+      {% if teams != None %}
         <th class="name-team">
           <p class="name">Name</p>
           <p class="team">Team Link</p>
@@ -188,18 +188,20 @@
               {{ division.players[id].name }}
             </a>
           </td>
-          {% if division.players[id].team %}
+          {% if teams != None %}
             <td class="name-team">
               <div class="name">
                 <a href="/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/{{ id }}/">
                   {{ division.players[id].name }}
                 </a>
               </div>
-              <div class="team">
-                <a href="{{ division.players[id].paste }}">
-                  {{ division.players[id].team | sortTeam | summariseTeam }}
-                </a>
-              </div>
+              {% if teams[id] and teams[id].team %}
+                <div class="team">
+                  <a href="{{ teams[id].paste }}">
+                    {{ teams[id].team | sortTeam | summariseTeam }}
+                  </a>
+                </div>
+              {% endif %}
             </td>
           {% else %}
             <td class="cell-mobile">

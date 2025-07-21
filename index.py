@@ -220,6 +220,12 @@ def division(year, tid, divid):
         division['players'] = {}
 
     try:
+        with open(f"{div_base}/teams.json") as infile:
+            teams = json.load(infile)
+    except FileNotFoundError:
+        teams = None
+
+    try:
         with open(f"{div_base}/standings.json") as infile:
             division['standings'] = json.load(infile)
     except FileNotFoundError:
@@ -236,13 +242,16 @@ def division(year, tid, divid):
             title=f"{division['name']}: {tournament['name']} - VGC Homemade Standings",
             permalink=f"/{year}/{tid}/{divid}/",
             description=f"Homemade Standings for the {tournament['name']}: {division['name']} Division.",
+            tournament=tournament,
             division=division,
-            tournament=tournament
+            teams=teams
     )
 
 @app.route('/<int:year>/<tid>/<divid>/<int:pid>/')
 def player(year, tid, divid, pid):
     player_id = f"{pid}"
+    tour_base = f"{DATA}/{year}/{tid}"
+    div_base = f"{tour_base}/{divid}"
 
     division = {
             'id': divid,
@@ -250,14 +259,20 @@ def player(year, tid, divid, pid):
     }
 
     try:
-        with open(f"{DATA}/{year}/{tid}/tournament.json") as infile:
+        with open(f"{tour_base}/tournament.json") as infile:
             tournament = json.load(infile)
 
-        with open(f"{DATA}/{year}/{tid}/{divid}/players.json") as infile:
+        with open(f"{div_base}/players.json") as infile:
             players = json.load(infile)
             player = players[player_id]
     except FileNotFoundError:
         raise NotFound
+
+    try:
+        with open(f"{div_base}/teams.json") as infile:
+            teams = json.load(infile)
+    except FileNotFoundError:
+        teams = None
 
     return render_template(
             'player.html',
@@ -267,6 +282,7 @@ def player(year, tid, divid, pid):
             tournament=tournament,
             player=player,
             players=players,
+            teams=teams,
             division=division
     )
 
