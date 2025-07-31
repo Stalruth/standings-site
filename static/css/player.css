@@ -8,8 +8,12 @@ details[open] .preview {
   gap: 1rem;
 }
 
-.set {
+.set-display {
   display: flex;
+}
+
+.set {
+  margin-top: 4px;
 }
 
 @media (width > 38.5rem) {
