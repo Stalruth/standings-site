@@ -46,7 +46,7 @@ def pokemon_icon(pokemon_set):
     top = -math.floor(num / 12) * 30
     left = -(num % 12) * 40
 
-    return Markup(f'<span class="pokemon-icon" title="{species}" style="background-position: {left}px {top}px"></span>')
+    return Markup(f'<img src="/sprites/pokemonicons-sheet.png" width=40 height=30 alt="{species}" title="{species}" style="object-position: {left}px {top}px" class="pokemon-icon">')
 
 
 restricted_pokemon = {

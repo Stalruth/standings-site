@@ -2,6 +2,10 @@ details[open] .preview {
   display: none;
 }
 
+.preview .pokemon-icon {
+  vertical-align: bottom;
+}
+
 .teamlist {
   margin: 1rem 0;
   display: grid;
