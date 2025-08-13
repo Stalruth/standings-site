@@ -53,6 +53,9 @@
       <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/tournament.json">Tournament Information</a></li>
       <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/players.json">Player Data</a></li>
       <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/standings.json">Standings</a></li>
+      {% if teams != None %}
+        <li><a href="https://api.standings.stalruth.dev/{{ tournament.season }}/{{ tournament.id }}/{{ division.id }}/teams.json">Teams</a></li>
+      {% endif %}
     </ul>
   </details>
 
