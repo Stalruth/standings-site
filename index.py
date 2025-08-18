@@ -23,13 +23,7 @@ def percent(value):
     return "{:.2f}%".format(value * 100)
 
 
-@app.template_filter('pokemonIcon')
-def pokemon_icon(pokemon_set):
-    if 'species' in pokemon_set:
-        species = pokemon_set['species']
-    else:
-        species = 'Unknown'
-
+def get_icon_coords(species):
     p = re.compile('[^a-z0-9]')
     species_id = p.sub('', species.lower())
 
@@ -45,6 +39,28 @@ def pokemon_icon(pokemon_set):
         num = icon_info['i']
     top = -math.floor(num / 12) * 30
     left = -(num % 12) * 40
+
+    return (top, left)
+
+
+@app.template_filter('setIcon')
+def set_icon(pokemon_set):
+    if 'species' in pokemon_set:
+        species = pokemon_set['species']
+    else:
+        species = 'Unknown'
+    (top, left) = get_icon_coords(species)
+
+    return Markup(f'<span title="{species}" style="background-position: {left}px {top}px" class="set-icon"></span>')
+
+
+@app.template_filter('pokemonIcon')
+def pokemon_icon(pokemon_set):
+    if 'species' in pokemon_set:
+        species = pokemon_set['species']
+    else:
+        species = 'Unknown'
+    (top, left) = get_icon_coords(species)
 
     return Markup(f'<img src="/sprites/pokemonicons-sheet.png" width=40 height=30 alt="{species}" title="{species}" style="object-position: {left}px {top}px" class="pokemon-icon">')
 

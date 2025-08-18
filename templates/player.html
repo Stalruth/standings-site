@@ -59,11 +59,11 @@
         {% for pokemonSet in teams[pid].team | sortTeam %}
           <div class="set-display">
             <div>
-              {{ pokemonSet | pokemonIcon }}
+              {{ pokemonSet | setIcon }}
             </div>
-            <div class="set">
+            <p class="set">
               {{ pokemonSet | printSet }}
-            </div>
+            </p>
           </div>
         {% endfor %}
       </div>
