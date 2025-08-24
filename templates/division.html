@@ -216,7 +216,7 @@
             </td>
           {% endif %}
           <td class="record-resistance">
-            <p class="record">{{ division.players[id] | printRecord }}</p>
+            <p class="record">{{ division.players[id] | printRecord }}{{ division.players[id] | printLateness}}{{ division.players[id] | printPlaying }}</p>
             <p class="resistance">
               {{ division.players[id].resistances.opp | percent }}<br>
               <span class="oppopp">
@@ -234,8 +234,12 @@
       {% endfor %}
     </tbody>
   </table>
-  <p>* This player received one or more losses for being late.</p>
-  <p>^ This player's game in the current round is still going.</p>
+  {% if has_late_players %}
+    <p>* This player received one or more losses for being late.</p>
+  {% endif %}
+  {% if has_games_ongoing %}
+    <p>^ This player's game in the current round is still going.</p>
+  {% endif %}
 </main>
 
 <script type="module" src="/js/favourites.js"></script>

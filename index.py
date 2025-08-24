@@ -115,6 +115,22 @@ def print_record(player):
         return f"{wins}-{losses}"
 
 
+@app.template_filter('printLateness')
+def print_lateness(player):
+    first_game = player['rounds'][0]['rounds'][0]
+    if first_game['id'] == 0 and first_game['result'] == 'L':
+        return '*'
+    return ''
+
+
+@app.template_filter('printPlaying')
+def print_playing(player):
+    last_game = player['rounds'][-1]['rounds'][-1]
+    if last_game['result'] == '':
+        return '^'
+    return ''
+
+
 @app.template_filter('printRank')
 def print_rank(rank):
     if rank is None:
@@ -253,6 +269,19 @@ def division(year, tid, divid):
     except FileNotFoundError:
         pass
 
+    has_late_players = next(
+            filter(
+                lambda el: el['id'] == 0 and el['result'] == 'L',
+                map(lambda el: division['players'][el]['rounds'][0]['rounds'][0],
+                    division['players'])),
+            None) is not None
+    has_games_ongoing = next(
+            filter(
+                lambda el: el['result'] == '',
+                map(lambda el: division['players'][el]['rounds'][-1]['rounds'][-1],
+                    division['players'])),
+            None) is not None
+
     return render_template(
             'division.html',
             title=f"{division['name']}: {tournament['name']} - VGC Homemade Standings",
@@ -260,6 +289,8 @@ def division(year, tid, divid):
             description=f"Homemade Standings for the {tournament['name']}: {division['name']} Division.",
             tournament=tournament,
             division=division,
+            has_late_players=has_late_players,
+            has_games_ongoing=has_games_ongoing,
             teams=teams
     )
 
