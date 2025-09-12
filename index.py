@@ -181,8 +181,7 @@ def player_by_id(pid, players):
 def index():
     with open(f"{DATA}/years.json", 'r') as infile:
         years = json.load(infile)
-    current_year = years[-1]
-    with open(f"{DATA}/{current_year}/tournaments.json", 'r') as infile:
+    with open(f"{DATA}/{years[-1]}/tournaments.json", 'r') as infile:
         tournaments = json.load(infile)
 
     return render_template(
@@ -190,7 +189,8 @@ def index():
             title='VGC Homemade Standings',
             permalink='/',
             description='VGC Homemade Standings',
-            tournaments=tournaments)
+            tournaments=tournaments,
+            years=years)
 
 # TODO are we sure there's no directory traversal here
 @app.route('/<int:year>/')
